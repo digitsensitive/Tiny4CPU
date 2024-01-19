@@ -1,0 +1,13 @@
+{
+  "files.associations": {
+    "system_error": "c",
+    "type_traits": "c",
+    "xtr1common": "c",
+    "xutility": "c",
+    "cstdint": "c",
+    "tiny4_types.h": "c",
+    "tiny4.h": "c",
+    "stdio.h": "c",
+    "stdlib.h": "c"
+  }
+}
