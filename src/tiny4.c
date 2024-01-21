@@ -6,16 +6,19 @@
 bool initialize(Tiny4 *tiny4) {
   tiny4->is_running = true;
   tiny4->current_opcode = 0x0;
-  tiny4->program_counter = 0x0;
+  set_u4_value(&tiny4->program_counter, 0);
+  set_u4_value(&tiny4->input, 0x0);
+  set_u4_value(&tiny4->output, 0x0);
+  set_u4_value(&tiny4->program_length, 0);
 
   /* Clear General Purpose Registers */
   for (int i = 0; i < REGISTER_COUNT; ++i) {
-    tiny4->R[i];
+    set_u4_value(&tiny4->R[i], 0x0);
   }
 
   /* Clear Memory */
   for (int i = 0; i < MEMORY_SIZE; ++i) {
-    tiny4->memory[i] = 0;
+    set_u4_value(&tiny4->memory[i], 0x0);
   }
 
   return true;
@@ -34,7 +37,6 @@ bool load_application(Tiny4 *tiny4, const char *path_to_file) {
   // Get the length of the file
   fseek(file_pointer, 0, SEEK_END);
   long file_length = ftell(file_pointer);
-  tiny4->program_length = file_length;
   rewind(file_pointer);
 
   // Allocate memory in the range of the file length
@@ -53,7 +55,9 @@ bool load_application(Tiny4 *tiny4, const char *path_to_file) {
 
   // Copy buffer to Tiny4 memory
   for (int i = 0; i < file_length; ++i) {
-    tiny4->memory[i] = buffer[i];
+    set_u4_value(&tiny4->memory[i * 2], (buffer[i] & 0xF0) >> 4);
+    set_u4_value(&tiny4->memory[i * 2 + 1], buffer[i] & 0x0F);
+    add_u4_value(&tiny4->program_length, 1);
   }
 
   // Close file, free buffer
@@ -64,33 +68,33 @@ bool load_application(Tiny4 *tiny4, const char *path_to_file) {
 }
 
 void emulate_cycle(Tiny4 *tiny4) {
-  tiny4->current_opcode = tiny4->memory[tiny4->program_counter];
+  u8 pc = get_u4_value(&tiny4->program_counter);
+  tiny4->current_opcode = get_u4_value(&tiny4->memory[pc]) << 4 |
+                          get_u4_value(&tiny4->memory[pc + 1]);
 
   printf("PC: %d, Opcode: %d.\n", tiny4->program_counter,
          tiny4->current_opcode);
 
   switch (tiny4->current_opcode & 0xF0) {
     case 0x20:
-      printf("Case 0x20\n");
       // Zero out bits 4-7
-      tiny4->R[0] = tiny4->current_opcode & 0x0F;
+      printf("case 0x20.\n");
+      set_u4_value(&tiny4->R[0], tiny4->current_opcode & 0x0F);
       break;
     case 0x30:
-      printf("Case 0x30\n");
-      printf("The value of the X-register is: %d.\n", tiny4->R[0]);
-      u8 temp = tiny4->current_opcode & 0x0F;
-      printf("temp is: %d.\n", temp & 0x0F);
-      tiny4->R[0] += temp;
-      printf("The value of the X-register is: %d.\n", tiny4->R[0]);
+      printf("case 0x30.\n");
+      add_u4_value(&tiny4->R[0], tiny4->current_opcode & 0x0F);
       break;
     default:
       printf("Wrong opcode.\n");
       break;
   }
 
-  tiny4->program_counter++;
+  // Increase program counter by one
+  add_u4_value(&tiny4->program_counter, 2);
 
-  if (tiny4->program_counter >= tiny4->program_length) {
+  if (get_u4_value(&tiny4->program_counter) >
+      get_u4_value(&tiny4->program_length)) {
     tiny4->is_running = false;
   }
 }

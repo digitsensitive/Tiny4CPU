@@ -14,9 +14,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 
 clean:
 	rm -rf $(BUILD_DIR)/*.o
-	rm -f tiny4cpu.exe
+	rm *.exe
+	
 create:
 	$(CC) $(CFLAGS) src/main.c -o tiny4cpu.exe
-
-clean:
-	rm *.exe

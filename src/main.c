@@ -1,7 +1,6 @@
 #include <stdio.h>
 
 #include "tiny4.h"
-#include "tiny4_types.h"
 
 Tiny4 tiny4;
 
