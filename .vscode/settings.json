@@ -8,6 +8,7 @@
     "tiny4_types.h": "c",
     "tiny4.h": "c",
     "stdio.h": "c",
-    "stdlib.h": "c"
+    "stdlib.h": "c",
+    "windows.h": "c"
   }
 }

@@ -72,17 +72,12 @@ void emulate_cycle(Tiny4 *tiny4) {
   tiny4->current_opcode = get_u4_value(&tiny4->memory[pc]) << 4 |
                           get_u4_value(&tiny4->memory[pc + 1]);
 
-  printf("PC: %d, Opcode: %d.\n", tiny4->program_counter,
-         tiny4->current_opcode);
-
   switch (tiny4->current_opcode & 0xF0) {
     case 0x20:
       // Zero out bits 4-7
-      printf("case 0x20.\n");
       set_u4_value(&tiny4->R[0], tiny4->current_opcode & 0x0F);
       break;
     case 0x30:
-      printf("case 0x30.\n");
       add_u4_value(&tiny4->R[0], tiny4->current_opcode & 0x0F);
       break;
     default:
@@ -93,7 +88,7 @@ void emulate_cycle(Tiny4 *tiny4) {
   // Increase program counter by one
   add_u4_value(&tiny4->program_counter, 2);
 
-  if (get_u4_value(&tiny4->program_counter) >
+  if (get_u4_value(&tiny4->program_counter) / 2 >=
       get_u4_value(&tiny4->program_length)) {
     tiny4->is_running = false;
   }
