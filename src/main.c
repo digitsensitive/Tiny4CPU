@@ -1,3 +1,5 @@
+#include <stdlib.h>  // Include for atoi function
+
 #include "output.h"
 #include "tiny4.h"
 
@@ -29,8 +31,8 @@ void restore_terminal_settings() {
 int main(int argc, char *argv[]) {
   load_terminal_settings();
 
-  if (argc != 2) {
-    printf("usage: tiny4cpu [file]\n");
+  if (argc != 3) {
+    printf("usage: tiny4cpu [file_path_to_t4_file] [clock_time_in_msec]\n");
     return -1;
   }
 
@@ -44,8 +46,8 @@ int main(int argc, char *argv[]) {
   while (tiny4.is_running) {
     emulate_cycle(&tiny4);
     clear_terminal();
-    draw_terminal_output();
-    sleep_terminal();
+    draw_terminal_output(&tiny4);
+    sleep_terminal((unsigned int)atoi(argv[2]));
   }
 
   restore_terminal_settings();

@@ -21,12 +21,20 @@ Tiny4CPU has `16 opcodes` (operation code or instruction machine code), which ar
 all `one byte long` and stored `big-endian`. This means that the
 most-significant-byte is saved in memory first (i.e. the lower memory address).
 
-- `Load (LDX)`: 2k - LDX k
+- `Load (LDX)`: 1k - LDX k
   Set X = k.
   Load the nibble value k into the register X.
+- `Load (LDY)`: 2k - LDY k
+  Set Y = k.
+  Load the nibble value k into the register Y.
 - `Addition (ADX)`: 3k - ADX k
   Set X = X + k.
   Adds the value of k to the value of register X, then stores the result in X.
+- `Addition (ADY)`: 4k - ADY k
+  Set Y = Y + k.
+  Adds the value of k to the value of register Y, then stores the result in Y.
+- `Jump (JMP)`: 5k - JMP k
+  Jump to position k in RAM.
 
 ## Notes
 

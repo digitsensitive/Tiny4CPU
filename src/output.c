@@ -1,11 +1,24 @@
 #include "output.h"
 
-void draw_terminal_output() {
+#define NIBBLE_TO_BINARY_PATTERN "%c%c%c%c"
+
+#define NIBBLE_TO_BINARY(nibble)                                \
+  ((nibble) & 0x08 ? '1' : '0'), ((nibble) & 0x04 ? '1' : '0'), \
+      ((nibble) & 0x02 ? '1' : '0'), ((nibble) & 0x01 ? '1' : '0')
+
+void draw_terminal_output(Tiny4* tiny4) {
   printf("\x1B[32;1mTiny4CPU running ...\n");
   reset_font_style();
-  printf("\x1B[32;2m● ● ● ●\n");
+  printf("Power: %d\n", tiny4->is_running);
+  printf("Program Length: %d\n", get_u4_value(&tiny4->program_length));
+  printf("PC: %d\n", get_u4_value(&tiny4->program_counter));
+  printf("Register X: " NIBBLE_TO_BINARY_PATTERN,
+         NIBBLE_TO_BINARY(get_u4_value(&tiny4->R[0])));
+  printf("\nRegister Y: " NIBBLE_TO_BINARY_PATTERN,
+         NIBBLE_TO_BINARY(get_u4_value(&tiny4->R[1])));
+  printf("\nOutput: \x1B[30;1m █ ▁ █ █\n");
+  printf("\n");
   reset_font_style();
-  printf("Hello World!");
   fflush(stdout);  // Flush the output to ensure it's displayed immediately
 }
 
@@ -19,12 +32,12 @@ void clear_terminal() {
 /* ESC Code Sequence to reset all modes (styles and colors) */
 void reset_font_style() { printf("\x1b[0m"); }
 
-void sleep_terminal() {
+void sleep_terminal(unsigned int sleep_time_msec) {
 #ifdef _WIN32
   // Windows: Sleep for 5000 milliseconds (5 seconds)
-  Sleep(1000);
+  Sleep(sleep_time_msec);
 #else
   // Unix-like systems: Sleep for 5 seconds
-  sleep(1);
+  sleep(sleep_time_msec / 1000);
 #endif
 }

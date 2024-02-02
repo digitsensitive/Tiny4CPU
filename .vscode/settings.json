@@ -9,6 +9,7 @@
     "tiny4.h": "c",
     "stdio.h": "c",
     "stdlib.h": "c",
-    "windows.h": "c"
+    "windows.h": "c",
+    "cstddef": "cpp"
   }
 }

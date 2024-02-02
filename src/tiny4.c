@@ -57,7 +57,7 @@ bool load_application(Tiny4 *tiny4, const char *path_to_file) {
   for (int i = 0; i < file_length; ++i) {
     set_u4_value(&tiny4->memory[i * 2], (buffer[i] & 0xF0) >> 4);
     set_u4_value(&tiny4->memory[i * 2 + 1], buffer[i] & 0x0F);
-    add_u4_value(&tiny4->program_length, 1);
+    add_u4_value(&tiny4->program_length, 2);
   }
 
   // Close file, free buffer
@@ -72,23 +72,43 @@ void emulate_cycle(Tiny4 *tiny4) {
   tiny4->current_opcode = get_u4_value(&tiny4->memory[pc]) << 4 |
                           get_u4_value(&tiny4->memory[pc + 1]);
 
+  // Increment program counter before execution
+  add_u4_value(&tiny4->program_counter, 2);
+
   switch (tiny4->current_opcode & 0xF0) {
-    case 0x20:
-      // Zero out bits 4-7
+    /* Load (LDX): Load the nibble value into the register X */
+    case 0x10:
+      /* Zero out bits 4-7 */
       set_u4_value(&tiny4->R[0], tiny4->current_opcode & 0x0F);
       break;
+
+    /* Load (LDY): Load the nibble value into the register Y */
+    case 0x20:
+      /* Zero out bits 4-7 */
+      set_u4_value(&tiny4->R[1], tiny4->current_opcode & 0x0F);
+      break;
+
+    /* Addition (ADX): Add the value to register X, then store result in X. */
     case 0x30:
+      /* Zero out bits 4-7 */
       add_u4_value(&tiny4->R[0], tiny4->current_opcode & 0x0F);
+      break;
+
+    /* Addition (ADY): Add the value to register Y, then store result in Y. */
+    case 0x40:
+      /* Zero out bits 4-7 */
+      add_u4_value(&tiny4->R[1], tiny4->current_opcode & 0x0F);
+      break;
+    /* Jump (JMP): Jump to specified position in RAM */
+    case 0x50:
+      set_u4_value(&tiny4->program_counter, tiny4->current_opcode & 0x0F);
       break;
     default:
       printf("Wrong opcode.\n");
       break;
   }
 
-  // Increase program counter by one
-  add_u4_value(&tiny4->program_counter, 2);
-
-  if (get_u4_value(&tiny4->program_counter) / 2 >=
+  if (get_u4_value(&tiny4->program_counter) >=
       get_u4_value(&tiny4->program_length)) {
     tiny4->is_running = false;
   }
