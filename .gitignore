@@ -1,5 +1,6 @@
 # Ignore "build" folder
 build/*
 
-# Ignore the executable
+# Ignore executables
 tiny4cpu
+*.exe
