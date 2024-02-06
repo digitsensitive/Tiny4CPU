@@ -11,6 +11,9 @@ language programming in a compact environment.
 Dive into the world of microprocessors with Tiny4CPU and witness the power of
 4 bits in action.
 
+This project was inspired by `yashikota/td4-py`,
+which was inspired by `How to Build a CPU by Iku Watanabe`.
+
 <img src="./readme_image.png" alt="Tiny4CPU" style="width: 100%;"/>
 
 ## Instructions
@@ -21,38 +24,30 @@ Tiny4CPU has `16 opcodes` (operation code or instruction machine code), which ar
 all `one byte long` and stored `big-endian`. This means that the
 most-significant-byte is saved in memory first (i.e. the lower memory address).
 
-- `Load (LDX)`: 1k - LDX k
-  Set X = k.
-  Load the nibble value k into the register X.
-- `Load (LDY)`: 2k - LDY k
-  Set Y = k.
-  Load the nibble value k into the register Y.
-- `Addition (ADX)`: 3k - ADX k
-  Set X = X + k.
-  Adds the value of k to the value of register X, then stores the result in X.
-- `Addition (ADY)`: 4k - ADY k
-  Set Y = Y + k.
-  Adds the value of k to the value of register Y, then stores the result in Y.
-- `Jump (JMP)`: 5k - JMP k
-  Jump to position k in RAM.
+| Nr. | Mnemonic | Opcode    | Operands | Description                                       |
+| --- | -------- | --------- | -------- | ------------------------------------------------- |
+| 0   | NOP      | 0000      | 0        | No operation (Do nothing)                         |
+| 1   | LDX      | 0001 kkkk | 1        | Load Register X with immediate nibble value k     |
+| 2   | LDY      | 0010 kkkk | 1        | Load Register Y with immediate nibble value k     |
+| 3   | ADX      | 0011 kkkk | 1        | Add immediate nibble value k to Register X        |
+| 4   | ADY      | 0100 kkkk | 1        | Add immediate nibble value k to Register Y        |
+| 5   | SUX      | 0101 kkkk | 1        | Subtract immediate nibble value k from Register X |
+| 6   | SUY      | 0110 kkkk | 1        | Subtract immediate nibble value k from Register Y |
+| 7   | NOX      | 0111 kkkk | 0        | Perform bitwise NOT operation on Register X       |
+| 8   | NOY      | 1000 kkkk | 0        | Perform bitwise NOT operation on Register Y       |
+| 9   | STX      | 1001 kkkk | 1        | Store Register X value to memory address k        |
+| 10  | STY      | 1010 kkkk | 1        | Store Register Y value to memory address k        |
+| 11  | JXZ      | 1011 kkkk | 1        | Jump to memory address k if Register X is zero    |
+| 12  | JYZ      | 1100 kkkk | 1        | Jump to memory address k if Register Y is zero    |
+| 13  | JC       | 1101 kkkk | 1        | Jump to memory address if carry flag is set       |
+| 14  | JMP      | 1110 kkkk | 1        | Unconditional jump to memory address k            |
+| 15  | HLT      | 1111      | 0        | Halt execution                                    |
 
-## Notes
+## References
 
-- 00 - CLS, Clear the display
-- 1n - JP addr (n) (set pc to n). This would limit it to only jump to memory between 0 and 15. You might extend this by a factor of 16, means 256 bytes memory size, if you must load register A first with a number between 0 and 15, this number would be saved in a register A in RAM. Then you take the addr n in the bus, which goes to register B in RAM and selects the memory location
-
-  Subtraction (SUB)
-  Multiplication (MUL)
-  Division (DIV)
-  Load from Memory (LD)
-  Store to Memory (ST)
-  Conditional Branch (BR)
-  Jump (JMP)
-  Bitwise AND (AND)
-  Bitwise OR (OR)
-  Bitwise XOR (XOR)
-  Shift Left (SHL)
-  Shift Right (SHR)
-  Compare (CMP)
-  Set to 1 if Negative (SETN)
-  Set to 1 if Zero (SETZ)
+- [ANSI Escape Code](https://en.wikipedia.org/wiki/ANSI_escape_code)
+- [ANSI Escape Sequences, Github](https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797)
+- [ASCII Chart](https://en.cppreference.com/w/cpp/language/ascii)
+- [DDL4-CPU, A Modular 4-Bit CPU Design by Dave](https://hackaday.io/project/158510/logs)
+- [Github project td4-py by yashikota](https://github.com/yashikota/td4-py)
+- [Symbl](https://symbl.cc/en)
