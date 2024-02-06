@@ -33,8 +33,8 @@ most-significant-byte is saved in memory first (i.e. the lower memory address).
 | 4   | ADY      | 0100 kkkk | 1        | Add immediate nibble value k to Register Y        |
 | 5   | SUX      | 0101 kkkk | 1        | Subtract immediate nibble value k from Register X |
 | 6   | SUY      | 0110 kkkk | 1        | Subtract immediate nibble value k from Register Y |
-| 7   | NOX      | 0111 kkkk | 0        | Perform bitwise NOT operation on Register X       |
-| 8   | NOY      | 1000 kkkk | 0        | Perform bitwise NOT operation on Register Y       |
+| 7   | NOX      | 0111      | 0        | Perform bitwise NOT operation on Register X       |
+| 8   | NOY      | 1000      | 0        | Perform bitwise NOT operation on Register Y       |
 | 9   | STX      | 1001 kkkk | 1        | Store Register X value to memory address k        |
 | 10  | STY      | 1010 kkkk | 1        | Store Register Y value to memory address k        |
 | 11  | JXZ      | 1011 kkkk | 1        | Jump to memory address k if Register X is zero    |
