@@ -10,6 +10,7 @@
     "stdio.h": "c",
     "stdlib.h": "c",
     "windows.h": "c",
-    "cstddef": "cpp"
+    "cstddef": "cpp",
+    "assembler.h": "c"
   }
 }

@@ -39,7 +39,7 @@ most-significant-byte is saved in memory first (i.e. the lower memory address).
 | 10  | STY      | 1010 kkkk | 1        | Store Register Y value to memory address k        |
 | 11  | JXZ      | 1011 kkkk | 1        | Jump to memory address k if Register X is zero    |
 | 12  | JYZ      | 1100 kkkk | 1        | Jump to memory address k if Register Y is zero    |
-| 13  | JC       | 1101 kkkk | 1        | Jump to memory address if carry flag is set       |
+| 13  | JCA      | 1101 kkkk | 1        | Jump to memory address if carry flag is set       |
 | 14  | JMP      | 1110 kkkk | 1        | Unconditional jump to memory address k            |
 | 15  | HLT      | 1111      | 0        | Halt execution                                    |
 

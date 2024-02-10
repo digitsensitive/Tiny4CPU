@@ -7,9 +7,9 @@
       ((nibble) & 0x02 ? '1' : '0'), ((nibble) & 0x01 ? '1' : '0')
 
 void draw_terminal_output(Tiny4* tiny4) {
-  printf("\x1B[32;1mTiny4CPU running ...\n");
+  printf("\x1B[32;1m=== Tiny4CPU Emulator ===\n");
   reset_font_style();
-  printf("Power: %d\n", tiny4->is_running);
+  printf("Power: %s\n", tiny4->is_running ? "On" : "Off");
   printf("Program Length: %d\n", get_u4_value(&tiny4->program_length));
   printf("PC: %d\n", get_u4_value(&tiny4->program_counter));
   printf("Register X: " NIBBLE_TO_BINARY_PATTERN,

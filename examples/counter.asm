@@ -1,0 +1,7 @@
+LDX 0
+LDY 0
+ADX 1
+ADY 1
+ADX 1
+ADY 1
+JMP 4

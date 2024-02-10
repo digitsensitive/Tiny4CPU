@@ -76,31 +76,32 @@ void emulate_cycle(Tiny4 *tiny4) {
   add_u4_value(&tiny4->program_counter, 2);
 
   switch (tiny4->current_opcode & 0xF0) {
-    /* Load (LDX): Load the nibble value into the register X */
     case 0x10:
+      /* LDX */
       /* Zero out bits 4-7 */
       set_u4_value(&tiny4->R[0], tiny4->current_opcode & 0x0F);
       break;
 
-    /* Load (LDY): Load the nibble value into the register Y */
     case 0x20:
+      /* LDY */
       /* Zero out bits 4-7 */
       set_u4_value(&tiny4->R[1], tiny4->current_opcode & 0x0F);
       break;
 
-    /* Addition (ADX): Add the value to register X, then store result in X. */
     case 0x30:
+      /* ADX */
       /* Zero out bits 4-7 */
       add_u4_value(&tiny4->R[0], tiny4->current_opcode & 0x0F);
       break;
 
-    /* Addition (ADY): Add the value to register Y, then store result in Y. */
     case 0x40:
+      /* ADY */
       /* Zero out bits 4-7 */
       add_u4_value(&tiny4->R[1], tiny4->current_opcode & 0x0F);
       break;
-    /* Jump (JMP): Jump to specified position in RAM */
-    case 0x50:
+
+    case 0xE0:
+      /* JMP */
       set_u4_value(&tiny4->program_counter, tiny4->current_opcode & 0x0F);
       break;
     default:
