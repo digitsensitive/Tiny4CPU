@@ -4,7 +4,7 @@ PROGRAM_NAME = tiny4cpu
 # Directory stucture
 SRC_DIR = src
 INCLUDE_DIR = include
-SHARED_DIR = shared
+SHARED_DIR = ../shared
 BUILD_DIR = build
 
 # Compiler and flags
