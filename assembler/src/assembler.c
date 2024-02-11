@@ -25,7 +25,7 @@ bool assemble(const char* file_path) {
     set_u4_value(&operand, temp_value);
 
     // Convert opcode to binary
-    u4 opcode = mnemonice_to_binary(mnemonic);
+    u4 opcode = mnemonic_to_binary(mnemonic);
 
     // Combine opcode and operand into a single byte
     unsigned char instruction =
@@ -42,26 +42,21 @@ bool assemble(const char* file_path) {
   return true;
 }
 
-u4 mnemonice_to_binary(const char* opcode) {
+u4 mnemonic_to_binary(const char* mnemonic) {
   u4 value;
-  if (strcmp(opcode, "LDX") == 0) {
+  if (strcmp(mnemonic, "LDX") == 0) {
     set_u4_value(&value, 1);
-    return value;
-  } else if (strcmp(opcode, "LDY") == 0) {
+  } else if (strcmp(mnemonic, "LDY") == 0) {
     set_u4_value(&value, 2);
-    return value;
-  } else if (strcmp(opcode, "ADX") == 0) {
+  } else if (strcmp(mnemonic, "ADX") == 0) {
     set_u4_value(&value, 3);
-    return value;
-  } else if (strcmp(opcode, "ADY") == 0) {
+  } else if (strcmp(mnemonic, "ADY") == 0) {
     set_u4_value(&value, 4);
-    return value;
-  } else if (strcmp(opcode, "JMP") == 0) {
+  } else if (strcmp(mnemonic, "JMP") == 0) {
     set_u4_value(&value, 14);
-    return value;
   } else {
-    printf("Unsupported opcode: %s\n", opcode);
+    printf("Unsupported mnemonic: %s\n", mnemonic);
     set_u4_value(&value, -1);
-    return value;
   }
+  return value;
 }

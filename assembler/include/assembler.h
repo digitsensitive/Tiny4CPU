@@ -16,4 +16,4 @@ Instruction instructions[16];*/
 
 bool assemble(const char* file_path);
 
-u4 mnemonice_to_binary(const char* opcode);
+u4 mnemonic_to_binary(const char* mnemonic);
