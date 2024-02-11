@@ -45,15 +45,15 @@ bool assemble(const char* file_path) {
 u4 mnemonic_to_binary(const char* mnemonic) {
   u4 value;
   if (strcmp(mnemonic, "LDX") == 0) {
-    set_u4_value(&value, 1);
+    set_u4_value(&value, 0x1u);
   } else if (strcmp(mnemonic, "LDY") == 0) {
-    set_u4_value(&value, 2);
+    set_u4_value(&value, 0x2u);
   } else if (strcmp(mnemonic, "ADX") == 0) {
-    set_u4_value(&value, 3);
+    set_u4_value(&value, 0x3u);
   } else if (strcmp(mnemonic, "ADY") == 0) {
-    set_u4_value(&value, 4);
+    set_u4_value(&value, 0x4u);
   } else if (strcmp(mnemonic, "JMP") == 0) {
-    set_u4_value(&value, 14);
+    set_u4_value(&value, 0xEu);
   } else {
     printf("Unsupported mnemonic: %s\n", mnemonic);
     set_u4_value(&value, -1);
