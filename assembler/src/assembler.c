@@ -16,7 +16,7 @@ bool assemble(const char* file_path) {
     return false;
   }
 
-  char mnemonic[3];
+  char mnemonic[4];
   unsigned int temp_value;
   u4 operand;
 
@@ -28,12 +28,11 @@ bool assemble(const char* file_path) {
     u4 opcode = mnemonic_to_binary(mnemonic);
 
     // Combine opcode and operand into a single byte
-    unsigned char instruction =
+    u8 instruction =
         (get_u4_value(&opcode) << 4) | (get_u4_value(&operand) & 0x0F);
 
     // Write the combined instruction to the file
-    size_t bytes_written =
-        fwrite(&instruction, sizeof(unsigned char), 1, binary_output_file);
+    fwrite(&instruction, sizeof(u8), 1, binary_output_file);
   }
 
   fclose(assembly_input_file);
