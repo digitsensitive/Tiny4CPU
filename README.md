@@ -27,15 +27,15 @@ which was inspired by `How to Build a CPU by Iku Watanabe`.
 ## How to write a program for the Tiny4CPU
 
 Tiny4CPU programs are written in T4C Assembly and saved as `*.t4c` files.
-Use the Tiny4CPU Assembler to assembly your programs to `*.bin` files.
-After that, load your ROM `*.bin` file using the Tiny4CPU with the path and
-the clock time in msec.
+Use the Tiny4CPU Assembler to assembly your program to a `*.bin` file.
+After that, load your ROM `*.bin` file using the Tiny4CPU executable, including
+the file path and the clock time in milliseconds.
 
-Here an example:
+Example:
 
 ```bash
-assembler c:\...\examples\counter.t4c
-tiny4cpu c:\...\examples\counter.bin 1000
+./assembler .../examples/counter.t4c
+./tiny4cpu .../examples/counter.bin 1000
 ```
 
 ## Instruction set architecture (ISA)
