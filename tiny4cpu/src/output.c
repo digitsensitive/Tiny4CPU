@@ -2,9 +2,9 @@
 
 #define NIBBLE_TO_BINARY_PATTERN "%c%c%c%c"
 
-#define NIBBLE_TO_BINARY(nibble)                                \
-  ((nibble) & 0x08 ? '1' : '0'), ((nibble) & 0x04 ? '1' : '0'), \
-      ((nibble) & 0x02 ? '1' : '0'), ((nibble) & 0x01 ? '1' : '0')
+#define NIBBLE_TO_BINARY(nibble)                                  \
+  ((nibble) & 0x08u ? '1' : '0'), ((nibble) & 0x04u ? '1' : '0'), \
+      ((nibble) & 0x02u ? '1' : '0'), ((nibble) & 0x01u ? '1' : '0')
 
 void draw_terminal_output(Tiny4* tiny4) {
   printf("\x1B[32;1m=== Tiny4CPU Emulator ===\n");

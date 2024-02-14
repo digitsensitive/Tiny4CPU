@@ -15,17 +15,19 @@ typedef struct {
 static inline u8 get_u4_value(u4 *u) { return u->value; }
 
 static inline void set_u4_value(u4 *u, u8 new_value) {
-  u->value = new_value & 0x0F;  // Ensure only the lower 4 bits are set
+  u->value = new_value & 0x0Fu;  // Ensure only the lower 4 bits are set
 }
 
 static inline void add_u4_value(u4 *u, u8 value) {
-  u->value = (u->value + value) & 0x0F;  // Ensure only the lower 4 bits are set
+  u->value =
+      (u->value + value) & 0x0Fu;  // Ensure only the lower 4 bits are set
 }
 
 static inline void subtract_u4_value(u4 *u, u8 value) {
-  u->value = (u->value - value) & 0x0F;  // Ensure only the lower 4 bits are set
+  u->value =
+      (u->value - value) & 0x0Fu;  // Ensure only the lower 4 bits are set
 }
 
 static inline void bitwise_not_u4_value(u4 *u) {
-  u->value = (~u->value) & 0x0F;  // Ensure only the lower 4 bits are set
+  u->value = (~u->value) & 0x0Fu;  // Ensure only the lower 4 bits are set
 }
