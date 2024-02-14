@@ -9,7 +9,7 @@ BUILD_DIR = build
 
 # Compiler and flags
 CC = gcc
-CFLAGS = -std=c11 -Wall -I$(INCLUDE_DIR) -I$(SHARED_DIR)
+CFLAGS = -std=c11 -Wall -Wno-missing-braces -I$(INCLUDE_DIR) -I$(SHARED_DIR)
 
 # Source files
 SRCS = $(wildcard $(SRC_DIR)/*.c)

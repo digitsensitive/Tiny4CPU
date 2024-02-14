@@ -6,14 +6,11 @@
 
 #include "tiny4_types.h"
 
-/*typedef struct {
-  char mnemonic[3];
+typedef struct {
+  char mnemonic[4];
   u4 opcode;
-  u4 operand;
 } Instruction;
 
-Instruction instructions[16];*/
-
+extern Instruction instructions[INSTRUCTIONS_COUNT];
 bool assemble(const char* file_path);
-
 u4 mnemonic_to_binary(const char* mnemonic);

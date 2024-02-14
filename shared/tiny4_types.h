@@ -2,6 +2,8 @@
 
 #include "stdint.h"
 
+#define INSTRUCTIONS_COUNT 16
+
 typedef enum { false = 0, true = 1 } bool;
 typedef uint8_t u8;
 
@@ -12,11 +14,11 @@ typedef struct {
 
 static inline u8 get_u4_value(u4 *u) { return u->value; }
 
-static inline void set_u4_value(u4 *u, uint8_t new_value) {
+static inline void set_u4_value(u4 *u, u8 new_value) {
   u->value = new_value & 0x0F;  // Ensure only the lower 4 bits are set
 }
 
-static inline void add_u4_value(u4 *u, uint8_t value) {
+static inline void add_u4_value(u4 *u, u8 value) {
   u->value =
       (u->value + value) & 0x0F;  // Ensure only the lower 4 bits are seSt
 }

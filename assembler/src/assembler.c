@@ -1,5 +1,11 @@
 #include "assembler.h"
 
+Instruction instructions[INSTRUCTIONS_COUNT] = {
+    {"NOP", 0x0u}, {"LDX", 0x1u}, {"LDY", 0x2u}, {"ADX", 0x3u},
+    {"ADY", 0x4u}, {"SUX", 0x5u}, {"SUY", 0x6u}, {"NOX", 0x7u},
+    {"NOY", 0x8u}, {"STX", 0x9u}, {"STY", 0xAu}, {"JXZ", 0xBu},
+    {"JYZ", 0xCu}, {"JCA", 0xDu}, {"JMP", 0xEu}, {"HLT", 0xFu}};
+
 bool assemble(const char* file_path) {
   /* Files */
   FILE* assembly_input_file;
@@ -21,10 +27,7 @@ bool assemble(const char* file_path) {
   u4 operand;
 
   while (fscanf(assembly_input_file, "%3s %u", mnemonic, &temp_value) == 2) {
-    // Transform
     set_u4_value(&operand, temp_value);
-
-    // Convert opcode to binary
     u4 opcode = mnemonic_to_binary(mnemonic);
 
     // Combine opcode and operand into a single byte
@@ -42,20 +45,12 @@ bool assemble(const char* file_path) {
 }
 
 u4 mnemonic_to_binary(const char* mnemonic) {
-  u4 value;
-  if (strcmp(mnemonic, "LDX") == 0) {
-    set_u4_value(&value, 0x1u);
-  } else if (strcmp(mnemonic, "LDY") == 0) {
-    set_u4_value(&value, 0x2u);
-  } else if (strcmp(mnemonic, "ADX") == 0) {
-    set_u4_value(&value, 0x3u);
-  } else if (strcmp(mnemonic, "ADY") == 0) {
-    set_u4_value(&value, 0x4u);
-  } else if (strcmp(mnemonic, "JMP") == 0) {
-    set_u4_value(&value, 0xEu);
-  } else {
-    printf("Unsupported mnemonic: %s\n", mnemonic);
-    set_u4_value(&value, -1);
+  for (int i = 0; i < INSTRUCTIONS_COUNT; ++i) {
+    if (strcmp(mnemonic, instructions[i].mnemonic) == 0) {
+      return instructions[i].opcode;
+    }
   }
-  return value;
+
+  printf("Unsupported mnemonic: %s\n", mnemonic);
+  return instructions[0].opcode; /* return NOP instruction */
 }
