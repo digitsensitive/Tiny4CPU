@@ -100,6 +100,30 @@ void emulate_cycle(Tiny4 *tiny4) {
       add_u4_value(&tiny4->R[1], tiny4->current_opcode & 0x0F);
       break;
 
+    case 0x50:
+      /* SUX */
+      /* Zero out bits 4-7 */
+      subtract_u4_value(&tiny4->R[0], tiny4->current_opcode & 0x0F);
+      break;
+
+    case 0x60:
+      /* SUY */
+      /* Zero out bits 4-7 */
+      subtract_u4_value(&tiny4->R[1], tiny4->current_opcode & 0x0F);
+      break;
+
+    case 0x70:
+      /* NOX */
+      /* Zero out bits 4-7 */
+      bitwise_not_u4_value(&tiny4->R[0]);
+      break;
+
+    case 0x80:
+      /* NOY */
+      /* Zero out bits 4-7 */
+      bitwise_not_u4_value(&tiny4->R[1]);
+      break;
+
     case 0xE0:
       /* JMP */
       set_u4_value(&tiny4->program_counter, tiny4->current_opcode & 0x0F);

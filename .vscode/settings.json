@@ -11,6 +11,7 @@
     "stdlib.h": "c",
     "windows.h": "c",
     "cstddef": "cpp",
-    "assembler.h": "c"
+    "assembler.h": "c",
+    "stdint.h": "c"
   }
 }

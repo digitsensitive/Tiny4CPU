@@ -59,8 +59,13 @@ bool assemble(const char* file_path) {
   unsigned int temp_value;
   u4 operand;
 
-  while (fscanf(assembly_input_file, "%3s %u", mnemonic, &temp_value) == 2) {
-    set_u4_value(&operand, temp_value);
+  while (fscanf(assembly_input_file, "%3s", mnemonic) == 1) {
+    set_u4_value(&operand, 0x0u); /* Initialize operand to 0 */
+
+    if (fscanf(assembly_input_file, "%u", &temp_value) == 1) {
+      set_u4_value(&operand, temp_value);
+    }
+
     u4 opcode = mnemonic_to_binary(mnemonic);
 
     // Combine opcode and operand into a single byte

@@ -19,6 +19,13 @@ static inline void set_u4_value(u4 *u, u8 new_value) {
 }
 
 static inline void add_u4_value(u4 *u, u8 value) {
-  u->value =
-      (u->value + value) & 0x0F;  // Ensure only the lower 4 bits are seSt
+  u->value = (u->value + value) & 0x0F;  // Ensure only the lower 4 bits are set
+}
+
+static inline void subtract_u4_value(u4 *u, u8 value) {
+  u->value = (u->value - value) & 0x0F;  // Ensure only the lower 4 bits are set
+}
+
+static inline void bitwise_not_u4_value(u4 *u) {
+  u->value = (~u->value) & 0x0F;  // Ensure only the lower 4 bits are set
 }
