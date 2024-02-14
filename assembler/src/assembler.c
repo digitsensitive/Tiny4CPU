@@ -70,7 +70,7 @@ bool assemble(const char* file_path) {
 
     // Combine opcode and operand into a single byte
     u8 instruction =
-        (get_u4_value(&opcode) << 4) | (get_u4_value(&operand) & 0x0F);
+        (get_u4_value(&opcode) << 4) | (get_u4_value(&operand) & 0x0Fu);
 
     // Write the combined instruction to the file
     fwrite(&instruction, sizeof(u8), 1, binary_output_file);

@@ -5,20 +5,20 @@
 
 bool initialize(Tiny4 *tiny4) {
   tiny4->is_running = true;
-  tiny4->current_opcode = 0x0;
+  tiny4->current_opcode = 0x0u;
   set_u4_value(&tiny4->program_counter, 0);
-  set_u4_value(&tiny4->input, 0x0);
-  set_u4_value(&tiny4->output, 0x0);
+  set_u4_value(&tiny4->input, 0x0u);
+  set_u4_value(&tiny4->output, 0x0u);
   set_u4_value(&tiny4->program_length, 0);
 
   /* Clear General Purpose Registers */
   for (int i = 0; i < REGISTER_COUNT; ++i) {
-    set_u4_value(&tiny4->R[i], 0x0);
+    set_u4_value(&tiny4->R[i], 0x0u);
   }
 
   /* Clear Memory */
   for (int i = 0; i < MEMORY_SIZE; ++i) {
-    set_u4_value(&tiny4->memory[i], 0x0);
+    set_u4_value(&tiny4->memory[i], 0x0u);
   }
 
   return true;
@@ -55,8 +55,8 @@ bool load_application(Tiny4 *tiny4, const char *path_to_file) {
 
   // Copy buffer to Tiny4 memory
   for (int i = 0; i < file_length; ++i) {
-    set_u4_value(&tiny4->memory[i * 2], (buffer[i] & 0xF0) >> 4);
-    set_u4_value(&tiny4->memory[i * 2 + 1], buffer[i] & 0x0F);
+    set_u4_value(&tiny4->memory[i * 2], (buffer[i] & 0xF0u) >> 4);
+    set_u4_value(&tiny4->memory[i * 2 + 1], buffer[i] & 0x0Fu);
     add_u4_value(&tiny4->program_length, 2);
   }
 
@@ -75,58 +75,58 @@ void emulate_cycle(Tiny4 *tiny4) {
   // Increment program counter before execution
   add_u4_value(&tiny4->program_counter, 2);
 
-  switch (tiny4->current_opcode & 0xF0) {
-    case 0x10:
+  switch (tiny4->current_opcode & 0xF0u) {
+    case 0x10u:
       /* LDX */
       /* Zero out bits 4-7 */
-      set_u4_value(&tiny4->R[0], tiny4->current_opcode & 0x0F);
+      set_u4_value(&tiny4->R[0], tiny4->current_opcode & 0x0Fu);
       break;
 
-    case 0x20:
+    case 0x20u:
       /* LDY */
       /* Zero out bits 4-7 */
-      set_u4_value(&tiny4->R[1], tiny4->current_opcode & 0x0F);
+      set_u4_value(&tiny4->R[1], tiny4->current_opcode & 0x0Fu);
       break;
 
-    case 0x30:
+    case 0x30u:
       /* ADX */
       /* Zero out bits 4-7 */
-      add_u4_value(&tiny4->R[0], tiny4->current_opcode & 0x0F);
+      add_u4_value(&tiny4->R[0], tiny4->current_opcode & 0x0Fu);
       break;
 
-    case 0x40:
+    case 0x40u:
       /* ADY */
       /* Zero out bits 4-7 */
-      add_u4_value(&tiny4->R[1], tiny4->current_opcode & 0x0F);
+      add_u4_value(&tiny4->R[1], tiny4->current_opcode & 0x0Fu);
       break;
 
-    case 0x50:
+    case 0x50u:
       /* SUX */
       /* Zero out bits 4-7 */
-      subtract_u4_value(&tiny4->R[0], tiny4->current_opcode & 0x0F);
+      subtract_u4_value(&tiny4->R[0], tiny4->current_opcode & 0x0Fu);
       break;
 
-    case 0x60:
+    case 0x60u:
       /* SUY */
       /* Zero out bits 4-7 */
-      subtract_u4_value(&tiny4->R[1], tiny4->current_opcode & 0x0F);
+      subtract_u4_value(&tiny4->R[1], tiny4->current_opcode & 0x0Fu);
       break;
 
-    case 0x70:
+    case 0x70u:
       /* NOX */
       /* Zero out bits 4-7 */
       bitwise_not_u4_value(&tiny4->R[0]);
       break;
 
-    case 0x80:
+    case 0x80u:
       /* NOY */
       /* Zero out bits 4-7 */
       bitwise_not_u4_value(&tiny4->R[1]);
       break;
 
-    case 0xE0:
+    case 0xE0u:
       /* JMP */
-      set_u4_value(&tiny4->program_counter, tiny4->current_opcode & 0x0F);
+      set_u4_value(&tiny4->program_counter, tiny4->current_opcode & 0x0Fu);
       break;
     default:
       printf("Wrong opcode.\n");
