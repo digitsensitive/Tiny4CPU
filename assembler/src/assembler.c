@@ -6,6 +6,38 @@ Instruction instructions[INSTRUCTIONS_COUNT] = {
     {"NOY", 0x8u}, {"STX", 0x9u}, {"STY", 0xAu}, {"JXZ", 0xBu},
     {"JYZ", 0xCu}, {"JCA", 0xDu}, {"JMP", 0xEu}, {"HLT", 0xFu}};
 
+const char* replace_file_extension(const char* original_path,
+                                   const char* new_extension) {
+  // Find the last dot in the original path
+  const char* last_dot = strrchr(original_path, '.');
+
+  // Calculate the length of the extension
+  size_t extension_length = strlen(new_extension);
+
+  // Calculate the length of the original path without the extension
+  size_t path_length =
+      last_dot ? (size_t)(last_dot - original_path) : strlen(original_path);
+
+  // Allocate memory for the new path, new extension and null character
+  char* new_path = (char*)malloc(path_length + extension_length + 1);
+  if (new_path == NULL) {
+    fputs("Memory allocation failed.\n", stderr);
+    return NULL;
+  }
+
+  // Copy the original path up to the last dot (if it exists)
+  if (last_dot) {
+    strncpy(new_path, original_path, path_length);
+  } else {
+    strcpy(new_path, original_path);
+  }
+
+  // Append the new extension
+  strcpy(new_path + path_length, new_extension);
+
+  return new_path;
+}
+
 bool assemble(const char* file_path) {
   /* Files */
   FILE* assembly_input_file;
@@ -15,10 +47,11 @@ bool assemble(const char* file_path) {
   assembly_input_file = fopen(file_path, "r");
 
   /* Open Output File as binary file for write */
-  binary_output_file = fopen("counter.t4", "wb");
+  const char* output_file_path = replace_file_extension(file_path, ".bin");
+  binary_output_file = fopen(output_file_path, "wb");
 
   if (assembly_input_file == NULL || binary_output_file == NULL) {
-    fputs("Memory allocation for FILE pointer failed!\n", stderr);
+    fputs("Memory allocation for FILE pointer failed.\n", stderr);
     return false;
   }
 
@@ -38,6 +71,7 @@ bool assemble(const char* file_path) {
     fwrite(&instruction, sizeof(u8), 1, binary_output_file);
   }
 
+  free((void*)output_file_path);
   fclose(assembly_input_file);
   fclose(binary_output_file);
 
