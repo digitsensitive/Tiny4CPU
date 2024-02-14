@@ -38,6 +38,8 @@ Example:
 ./tiny4cpu .../examples/counter.bin 1000
 ```
 
+Find some examples in the root examples folder.
+
 ## Instruction set architecture (ISA)
 
 Tiny4CPU has `16 opcodes` (operation code or instruction machine code), which are
