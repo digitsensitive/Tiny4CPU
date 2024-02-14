@@ -24,9 +24,21 @@ which was inspired by `How to Build a CPU by Iku Watanabe`.
 - Modular and extensible design
 - Comprehensive documentation
 
-## Instructions
+## How to write a program for the Tiny4CPU
 
-Tiny4CPU applications or ROMS are saved as `*.t4` files.
+Tiny4CPU programs are written in T4C Assembly and saved as `*.t4c` files.
+Use the Tiny4CPU Assembler to assembly your programs to `*.bin` files.
+After that, load your ROM `*.bin` file using the Tiny4CPU with the path and
+the clock time in msec.
+
+Here an example:
+
+```bash
+assembler c:\...\examples\counter.t4c
+tiny4cpu c:\...\examples\counter.bin 1000
+```
+
+## Instruction set architecture (ISA)
 
 Tiny4CPU has `16 opcodes` (operation code or instruction machine code), which are
 all `one byte long` and stored `big-endian`. This means that the

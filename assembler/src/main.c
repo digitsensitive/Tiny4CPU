@@ -5,7 +5,7 @@
 
 int main(int argc, char *argv[]) {
   if (argc != 2) {
-    printf("usage: assembler [file_path_to_asm_file]\n");
+    printf("usage: assembler [file_path_to_t4c_file]\n");
     return -1;
   }
 

@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
   load_terminal_settings();
 
   if (argc != 3) {
-    printf("usage: tiny4cpu [file_path_to_t4_file] [clock_time_in_msec]\n");
+    printf("usage: tiny4cpu [file_path_to_bin_file] [clock_time_in_msec]\n");
     return -1;
   }
 
