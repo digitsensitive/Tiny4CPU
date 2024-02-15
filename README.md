@@ -14,6 +14,8 @@ Dive into the world of microprocessors with Tiny4CPU and witness the power of
 This project was inspired by `yashikota/td4-py`,
 which was inspired by `How to Build a CPU by Iku Watanabe`.
 
+<img src="./tiny4cpu.gif" alt="Tiny4CPU" style="width: 100%;"/>
+
 ## Features
 
 - 4-bit architecture with its own assembler
