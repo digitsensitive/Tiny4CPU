@@ -11,8 +11,8 @@ language programming in a compact environment.
 Dive into the world of microprocessors with Tiny4CPU and witness the power of
 4 bits in action.
 
-This project was inspired by `yashikota/td4-py`,
-which was inspired by `How to Build a CPU by Iku Watanabe`.
+This project was inspired by [yashikota/td4-py](https://github.com/yashikota/td4-py),
+which was inspired by [How to Build a CPU by Iku Watanabe](https://www.amazon.co.jp/CPU%E3%81%AE%E5%89%B5%E3%82%8A%E3%81%8B%E3%81%9F-%E6%B8%A1%E6%B3%A2-%E9%83%81/dp/4839909865/ref=asap_bc?ie=UTF8).
 
 <img src="./tiny4cpu.gif" alt="Tiny4CPU" style="width: 100%;"/>
 
