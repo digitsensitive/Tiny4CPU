@@ -1,5 +1,7 @@
 # Tiny4CPU
 
+WORK IN PROGRESS!
+
 ![GitHub repo size](https://img.shields.io/github/repo-size/digitsensitive/Tiny4CPU)
 ![GitHub Release](https://img.shields.io/github/v/release/digitsensitive/Tiny4CPU)
 
