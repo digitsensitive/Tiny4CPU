@@ -22,7 +22,7 @@ which was inspired by [How to Build a CPU by Iku Watanabe](https://www.amazon.co
 
 - 4-bit architecture with its own assembler
 - 16-instruction set for data manipulation and control flow
-- 2 general-purpose registers and memory space of 16 bytes
+- 2 general-purpose registers and memory space of 128 bytes
 - Ability to adjust CPU clock cycles for synchronization in milliseconds
 - Assembly language support
 - Modular and extensible design
