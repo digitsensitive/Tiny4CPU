@@ -38,6 +38,17 @@ const char* replace_file_extension(const char* original_path,
   return new_path;
 }
 
+unsigned int binary_string_to_decimal(const char* binary_str) {
+  unsigned int decimal_value = 0;
+  int length = strlen(binary_str);
+
+  for (int i = 0; i < length; ++i) {
+    decimal_value = decimal_value * 2 + (binary_str[i] - '0');
+  }
+
+  return decimal_value;
+}
+
 bool assemble(const char* file_path) {
   /* Files */
   FILE* assembly_input_file;
@@ -62,8 +73,35 @@ bool assemble(const char* file_path) {
   while (fscanf(assembly_input_file, "%3s", mnemonic) == 1) {
     set_u4_value(&operand, 0x0u); /* Initialize operand to 0 */
 
-    if (fscanf(assembly_input_file, "%u", &temp_value) == 1) {
-      set_u4_value(&operand, temp_value);
+    char sign;
+    if (fscanf(assembly_input_file, " %c", &sign) == 1) {
+      switch (sign) {
+        case '#':
+          char prefix;
+          if (fscanf(assembly_input_file, "%c", &prefix) == 1) {
+            if (prefix == '$') {
+              /* Hexadecimal immediate addressing mode */
+              if (fscanf(assembly_input_file, "%x", &temp_value) == 1) {
+                set_u4_value(&operand, temp_value);
+              }
+            } else {
+              fseek(assembly_input_file, -1, SEEK_CUR);
+              /* Decimal immediate addressing mode */
+              if (fscanf(assembly_input_file, "%u", &temp_value) == 1) {
+                set_u4_value(&operand, temp_value);
+              }
+            }
+          }
+          break;
+        case '%':
+          char temp_binary_number[5];
+          /* Binary immediate addressing mode */
+          if (fscanf(assembly_input_file, "%4s", temp_binary_number) == 1) {
+            temp_value = binary_string_to_decimal(temp_binary_number);
+            set_u4_value(&operand, temp_value);
+          }
+          break;
+      }
     }
 
     u4 opcode = mnemonic_to_binary(mnemonic);

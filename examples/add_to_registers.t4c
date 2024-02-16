@@ -1,5 +1,5 @@
-LDX 0
-LDY 0
-ADX 1
-ADY 1
-JMP 4
+LDX #0
+LDY #0
+ADX #1
+ADY #1
+JMP #4
