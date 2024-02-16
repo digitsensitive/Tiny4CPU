@@ -3,13 +3,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-bool initialize(Tiny4 *tiny4) {
+bool initialize(Tiny4 *tiny4, unsigned int clock_in_msec) {
   tiny4->is_running = true;
   tiny4->current_opcode = 0x0u;
   set_u4_value(&tiny4->program_counter, 0);
   set_u4_value(&tiny4->input, 0x0u);
   set_u4_value(&tiny4->output, 0x0u);
   set_u4_value(&tiny4->program_length, 0);
+  tiny4->clock_hertz = 1000 / clock_in_msec;
 
   /* Clear General Purpose Registers */
   for (int i = 0; i < REGISTER_COUNT; ++i) {
@@ -78,50 +79,54 @@ void emulate_cycle(Tiny4 *tiny4) {
   switch (tiny4->current_opcode & 0xF0u) {
     case 0x10u:
       /* LDX */
-      /* Zero out bits 4-7 */
       set_u4_value(&tiny4->R[0], tiny4->current_opcode & 0x0Fu);
       break;
 
     case 0x20u:
       /* LDY */
-      /* Zero out bits 4-7 */
       set_u4_value(&tiny4->R[1], tiny4->current_opcode & 0x0Fu);
       break;
 
     case 0x30u:
       /* ADX */
-      /* Zero out bits 4-7 */
       add_u4_value(&tiny4->R[0], tiny4->current_opcode & 0x0Fu);
       break;
 
     case 0x40u:
       /* ADY */
-      /* Zero out bits 4-7 */
       add_u4_value(&tiny4->R[1], tiny4->current_opcode & 0x0Fu);
       break;
 
     case 0x50u:
       /* SUX */
-      /* Zero out bits 4-7 */
       subtract_u4_value(&tiny4->R[0], tiny4->current_opcode & 0x0Fu);
       break;
 
     case 0x60u:
       /* SUY */
-      /* Zero out bits 4-7 */
       subtract_u4_value(&tiny4->R[1], tiny4->current_opcode & 0x0Fu);
       break;
 
     case 0x70u:
       /* NOX */
-      /* Zero out bits 4-7 */
       bitwise_not_u4_value(&tiny4->R[0]);
       break;
 
     case 0x80u:
       /* NOY */
-      /* Zero out bits 4-7 */
       bitwise_not_u4_value(&tiny4->R[1]);
+      break;
+
+    case 0x90u:
+      /* STX */
+      set_u4_value(&tiny4->memory[tiny4->current_opcode & 0x0Fu],
+                   tiny4->R[0].value);
+      break;
+
+    case 0xA0u:
+      /* STY */
+      set_u4_value(&tiny4->memory[tiny4->current_opcode & 0x0Fu],
+                   tiny4->R[1].value);
       break;
 
     case 0xE0u:

@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
   }
 
   /* Initialize Tiny4CPU instance */
-  bool init_succeeded = initialize(&tiny4);
+  bool init_succeeded = initialize(&tiny4, (unsigned int)atoi(argv[2]));
 
   if (init_succeeded) {
     load_application(&tiny4, argv[1]);
