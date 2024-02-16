@@ -3,7 +3,7 @@
 #include "tiny4_types.h"
 
 #define REGISTER_COUNT 2
-#define MEMORY_SIZE 256
+#define MEMORY_SIZE 16
 
 typedef struct {
   bool is_running;
@@ -14,7 +14,7 @@ typedef struct {
   u8 current_opcode;
   u4 program_counter;
   u4 R[REGISTER_COUNT];   /* General purpose registers */
-  u4 memory[MEMORY_SIZE]; /* Memory size of 128 bytes */
+  u4 memory[MEMORY_SIZE]; /* Memory size of 8 bytes */
 } Tiny4;
 
 bool initialize(Tiny4 *tiny4, unsigned int clock_in_msec);

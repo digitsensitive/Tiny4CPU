@@ -22,7 +22,7 @@ which was inspired by [How to Build a CPU by Iku Watanabe](https://www.amazon.co
 
 - 4-bit architecture with its own assembler
 - 16-instruction set for data manipulation and control flow
-- 2 general-purpose registers and memory space of 128 bytes
+- 2 general-purpose registers and memory space of 8 bytes
 - Ability to adjust CPU clock cycles for synchronization in milliseconds
 - Assembly language support
 - Modular and extensible design
@@ -78,21 +78,17 @@ all `one byte long` and stored `big-endian`.
 | IR       | 8           | Instruction Register         |
 | IAR      | 8           | Instruction Address Register |
 | ACC      | 4           | Accumulator                  |
-| MAR0     | 4           | Memory Address Register      |
-| MAR1     | 4           | Memory Address Register      |
+| MAR      | 4           | Memory Address Register      |
 | R0       | 4           | General purpose register     |
 | R1       | 4           | General purpose register     |
 
 ### Memory
 
-- The memory layout consists of two Memory Address Registers (MARs), each 4 bits
-  in size. These MARs are connected to a 4x16 decoder, enabling addressing of up
-  to 256 memory locations
+- The memory layout consists of one Memory Address Register (MAR).
+  The MAR is connected to two 2x4 decoder, enabling addressing of up
+  to 16 memory locations
 - Each memory location holds 4 bits of data, resulting in a total memory size
-  of 128 bytes
-- To read from or write to a specific memory location, the CPU sets the
-  appropriate address in the MARs. The 4x16 decoder selects the corresponding
-  memory bank based on the MAR inputs, enabling memory access.
+  of 8 bytes
 
 ### Addressing Modes
 
