@@ -49,6 +49,17 @@ unsigned int binary_string_to_decimal(const char* binary_str) {
   return decimal_value;
 }
 
+bool mnemonic_to_binary(const char* mnemonic, u4* opcode) {
+  for (int i = 0; i < INSTRUCTIONS_COUNT; ++i) {
+    if (strcmp(mnemonic, instructions[i].mnemonic) == 0) {
+      opcode->value = instructions[i].opcode.value;
+      return true;
+    }
+  }
+
+  return false;
+}
+
 bool assemble(const char* file_path) {
   /* Files */
   FILE* assembly_input_file;
@@ -66,28 +77,46 @@ bool assemble(const char* file_path) {
     return false;
   }
 
-  char mnemonic[4];
-  unsigned int temp_value;
-  u4 operand;
+  char line[MAX_LINE_LENGTH];
+  unsigned int current_line = 0;
+  while (fgets(line, MAX_LINE_LENGTH, assembly_input_file) != NULL) {
+    // Check if comment at the beginning of the line, if so, continue
+    if (line[0] == ';') {
+      continue;
+    }
 
-  while (fscanf(assembly_input_file, "%3s", mnemonic) == 1) {
-    set_u4_value(&operand, 0x0u); /* Initialize operand to 0 */
+    // Set Mnemonic
+    char mnemonic[4];
+    u4 opcode;
+    if (sscanf(line, "%3s", mnemonic) == 1) {
+      bool is_mnemonic_valid = mnemonic_to_binary(mnemonic, &opcode);
+      if (!is_mnemonic_valid) {
+        fprintf(stderr, "Unsupported mnemonic %s at line %d.\n", mnemonic,
+                current_line);
+        return false;
+      }
+    } else {
+      fprintf(stderr, "Missing Mnemonic at line %d.\n", current_line);
+      return false;
+    }
 
+    // Set operand
+    u4 operand;
     char sign;
-    if (fscanf(assembly_input_file, " %c", &sign) == 1) {
+    unsigned int temp_value;
+    if (sscanf(line, "%*3s %c", &sign) == 1) {
       switch (sign) {
         case '#':
           char prefix;
-          if (fscanf(assembly_input_file, "%c", &prefix) == 1) {
+          if (sscanf(line, "%*3s %*c%c", &prefix) == 1) {
             if (prefix == '$') {
               /* Hexadecimal immediate addressing mode */
-              if (fscanf(assembly_input_file, "%x", &temp_value) == 1) {
+              if (sscanf(line, "%*3s %*c%*c%x", &temp_value) == 1) {
                 set_u4_value(&operand, temp_value);
               }
             } else {
-              fseek(assembly_input_file, -1, SEEK_CUR);
               /* Decimal immediate addressing mode */
-              if (fscanf(assembly_input_file, "%u", &temp_value) == 1) {
+              if (sscanf(line, "%*3s %*c%u", &temp_value) == 1) {
                 set_u4_value(&operand, temp_value);
               }
             }
@@ -96,7 +125,7 @@ bool assemble(const char* file_path) {
         case '%':
           char temp_binary_number[5];
           /* Binary immediate addressing mode */
-          if (fscanf(assembly_input_file, "%4s", temp_binary_number) == 1) {
+          if (sscanf(line, "%*3s %*c%4s", temp_binary_number) == 1) {
             temp_value = binary_string_to_decimal(temp_binary_number);
             set_u4_value(&operand, temp_value);
           }
@@ -104,14 +133,14 @@ bool assemble(const char* file_path) {
       }
     }
 
-    u4 opcode = mnemonic_to_binary(mnemonic);
-
     // Combine opcode and operand into a single byte
     u8 instruction =
         (get_u4_value(&opcode) << 4) | (get_u4_value(&operand) & 0x0Fu);
 
     // Write the combined instruction to the file
     fwrite(&instruction, sizeof(u8), 1, binary_output_file);
+
+    current_line++; /* Increase line count */
   }
 
   free((void*)output_file_path);
@@ -119,15 +148,4 @@ bool assemble(const char* file_path) {
   fclose(binary_output_file);
 
   return true;
-}
-
-u4 mnemonic_to_binary(const char* mnemonic) {
-  for (int i = 0; i < INSTRUCTIONS_COUNT; ++i) {
-    if (strcmp(mnemonic, instructions[i].mnemonic) == 0) {
-      return instructions[i].opcode;
-    }
-  }
-
-  printf("Unsupported mnemonic: %s\n", mnemonic);
-  return instructions[0].opcode; /* return NOP instruction */
 }
