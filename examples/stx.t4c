@@ -1,4 +1,5 @@
-LDX #10
+; stx.t4c program
+LDX #10 ; this is a comment
 STX #$2
 ADX %1111
 JMP #2
