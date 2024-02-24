@@ -2,8 +2,6 @@
 
 #include "stdint.h"
 
-#define INSTRUCTIONS_COUNT 16
-
 typedef enum { false = 0, true = 1 } bool;
 typedef uint8_t u8;
 

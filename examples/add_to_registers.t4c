@@ -1,5 +1,12 @@
+; Registers Addition Example
+
+; Init registers to zero
+Init:
 LDX #0
 LDY #0
+
+; Infinite loop over the registers
+Loop:
 ADX #1
 ADY #1
-JMP #4
+JMP Loop
