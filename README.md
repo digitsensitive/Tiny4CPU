@@ -48,27 +48,68 @@ Find some examples in the root examples folder.
 
 ### Instruction Set
 
-Tiny4CPU has `16 opcodes` (operation code or instruction machine code), which are
-all `one byte long` and stored `big-endian`.
+Tiny4CPU has `16 opcodes` (operation code, OP or instruction machine code).
 
-| Nr. | Mnemonic | Opcode    | Operands | Description                                       |
-| --- | -------- | --------- | -------- | ------------------------------------------------- |
-| 0   | NOP      | 0000      | 0        | No operation (Do nothing)                         |
-| 1   | LDX      | 0001 kkkk | 1        | Load Register X with immediate nibble value k     |
-| 2   | LDY      | 0010 kkkk | 1        | Load Register Y with immediate nibble value k     |
-| 3   | ADX      | 0011 kkkk | 1        | Add immediate nibble value k to Register X        |
-| 4   | ADY      | 0100 kkkk | 1        | Add immediate nibble value k to Register Y        |
-| 5   | SUX      | 0101 kkkk | 1        | Subtract immediate nibble value k from Register X |
-| 6   | SUY      | 0110 kkkk | 1        | Subtract immediate nibble value k from Register Y |
-| 7   | NOX      | 0111      | 0        | Perform bitwise NOT operation on Register X       |
-| 8   | NOY      | 1000      | 0        | Perform bitwise NOT operation on Register Y       |
-| 9   | STX      | 1001 kkkk | 1        | Store Register X value to memory address k        |
-| 10  | STY      | 1010 kkkk | 1        | Store Register Y value to memory address k        |
-| 11  | JXZ      | 1011 kkkk | 1        | Jump to memory address k if Register X is zero    |
-| 12  | JYZ      | 1100 kkkk | 1        | Jump to memory address k if Register Y is zero    |
-| 13  | JCA      | 1101 kkkk | 1        | Jump to memory address if carry flag is set       |
-| 14  | JMP      | 1110 kkkk | 1        | Unconditional jump to memory address k            |
-| 15  | HLT      | 1111      | 0        | Halt execution                                    |
+| Mnemonic | Binary | OP  | Number of bytes |
+| -------- | ------ | --- | --------------- |
+| NOP      | 0000   | #0  |                 |
+| LDX      | 0001   | #1  |                 |
+| LDY      | 0010   | #2  |                 |
+| ADX      | 0011   | #3  |                 |
+| ADY      | 0100   | #4  |                 |
+| SUX      | 0101   | #5  |                 |
+| SUY      | 0110   | #6  |                 |
+| NOX      | 0111   | #7  |                 |
+| NOY      | 1000   | #8  |                 |
+| STX      | 1001   | #9  |                 |
+| STY      | 1010   | #A  |                 |
+| JXZ      | 1011   | #B  |                 |
+| JYZ      | 1100   | #C  |                 |
+| JCA      | 1101   | #D  |                 |
+| JMP      | 1110   | #E  | 3               |
+| HLT      | 1111   | #F  |                 |
+
+#### Hex and Timing
+
+| Description                                       |
+| ------------------------------------------------- |
+| No operation (Do nothing)                         |
+| Load Register X with immediate nibble value k     |
+| Load Register Y with immediate nibble value k     |
+| Add immediate nibble value k to Register X        |
+| Add immediate nibble value k to Register Y        |
+| Subtract immediate nibble value k from Register X |
+| Subtract immediate nibble value k from Register Y |
+| Perform bitwise NOT operation on Register X       |
+| Perform bitwise NOT operation on Register Y       |
+| Store Register X value to memory address k        |
+| Store Register Y value to memory address k        |
+| Jump to memory address k if Register X is zero    |
+| Jump to memory address k if Register Y is zero    |
+| Jump to memory address if carry flag is set       |
+| **Unconditional jump to memory address kk**       |
+| Halt execution                                    |
+
+#### Details
+
+##### JMP
+
+Unconditional jump to (memory) address.
+
+###### Format
+
+| 1110 | ADDRESS BYTE 1 | ADDRESS BYTE 2 |
+| ---- | -------------- | -------------- |
+
+###### Function
+
+| PC &#11013; ADDRESS |
+| ------------------- |
+
+###### Description
+
+A new address is loaded in the program counter and a jump in the program
+sequence occurs. The address specification can only be absolute.
 
 ### Registers
 
@@ -84,6 +125,7 @@ all `one byte long` and stored `big-endian`.
 
 ### Memory
 
+- Mono-directional 8-bit address-bus from the microprocessor unit (MPU) to memory
 - The memory layout consists of one Memory Address Register (MAR).
   The MAR is connected to two 2x4 decoder, enabling addressing of up
   to 16 memory locations
