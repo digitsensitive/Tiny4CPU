@@ -134,7 +134,15 @@ sequence occurs. The address specification can only be absolute.
 
 ### Addressing Modes
 
-TO BE COMPLETED
+Addressing refers to the specification of the location of the operand.
+
+#### Absolute (Extended)
+
+| OPCODE | FULL 16-BIT |
+| ------ | ----------- |
+
+| OPCODE | ADDRESS |
+| ------ | ------- |
 
 ### Endianness
 
