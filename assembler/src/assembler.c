@@ -63,6 +63,65 @@ bool mnemonic_to_binary(const char* mnemonic, u4* opcode) {
   return false;
 }
 
+bool parse_labels(const char* file_path) {
+  FILE* assembly_input_file;
+
+  /* Open input file for read (file must exist!) */
+  assembly_input_file = fopen(file_path, "r");
+
+  if (assembly_input_file == NULL) {
+    fprintf(stderr,
+            "Parse labels: Memory allocation for FILE pointer (Filepath: %s) "
+            "failed.\n",
+            file_path);
+    return false;
+  }
+
+  char line[MAX_LINE_LENGTH];
+  unsigned int address = 0;
+  unsigned int current_line = 0;
+  while (fgets(line, MAX_LINE_LENGTH, assembly_input_file) != NULL) {
+    /* Continue if comment or empty line */
+    if (line[0] == ';' || line[0] == '\n') {
+      current_line++;
+      continue;
+    }
+
+    /* Check if the line contains a label */
+    if (strchr(line, ':')) {
+      const char* label_name = strtok(line, ":");
+      strcpy(labels[label_count].name, label_name);
+      labels[label_count].address = address;
+      label_count++;
+    } else {
+      /* Increment address depending on the instruction on the line */
+      char mnemonic[4];
+      if (sscanf(line, "%3s", mnemonic) == 1) {
+        for (int i = 0; i < NUM_INSTRUCTIONS; ++i) {
+          if (strcmp(mnemonic, instructions[i].mnemonic) == 0) {
+            if (strcmp(mnemonic, "JMP") == 0) {
+              address += 3;
+            } else {
+              address += 2;
+            }
+          }
+        }
+      } else {
+        fprintf(stderr,
+                "Parse labels: Missing or incorrect Mnemonic at line %d.\n",
+                current_line);
+        return false;
+      }
+    }
+
+    current_line++;
+  }
+
+  fclose(assembly_input_file);
+
+  return true;
+}
+
 bool assemble(const char* file_path) {
   /* Parse labels */
   bool parse_labels_return = parse_labels(file_path);
@@ -177,65 +236,6 @@ bool assemble(const char* file_path) {
   free((void*)output_file_path);
   fclose(assembly_input_file);
   fclose(binary_output_file);
-
-  return true;
-}
-
-bool parse_labels(const char* file_path) {
-  FILE* assembly_input_file;
-
-  /* Open input file for read (file must exist!) */
-  assembly_input_file = fopen(file_path, "r");
-
-  if (assembly_input_file == NULL) {
-    fprintf(stderr,
-            "Parse labels: Memory allocation for FILE pointer (Filepath: %s) "
-            "failed.\n",
-            file_path);
-    return false;
-  }
-
-  char line[MAX_LINE_LENGTH];
-  unsigned int address = 0;
-  unsigned int current_line = 0;
-  while (fgets(line, MAX_LINE_LENGTH, assembly_input_file) != NULL) {
-    /* Continue if comment or empty line */
-    if (line[0] == ';' || line[0] == '\n') {
-      current_line++;
-      continue;
-    }
-
-    /* Check if the line contains a label */
-    if (strchr(line, ':')) {
-      const char* label_name = strtok(line, ":");
-      strcpy(labels[label_count].name, label_name);
-      labels[label_count].address = address;
-      label_count++;
-    } else {
-      /* Increment address depending on the instruction on the line */
-      char mnemonic[4];
-      if (sscanf(line, "%3s", mnemonic) == 1) {
-        for (int i = 0; i < NUM_INSTRUCTIONS; ++i) {
-          if (strcmp(mnemonic, instructions[i].mnemonic) == 0) {
-            if (strcmp(mnemonic, "JMP") == 0) {
-              address += 3;
-            } else {
-              address += 2;
-            }
-          }
-        }
-      } else {
-        fprintf(stderr,
-                "Parse labels: Missing or incorrect Mnemonic at line %d.\n",
-                current_line);
-        return false;
-      }
-    }
-
-    current_line++;
-  }
-
-  fclose(assembly_input_file);
 
   return true;
 }
