@@ -50,9 +50,9 @@ Find some examples in the root examples folder.
 
 Tiny4CPU has `16 opcodes` (operation code, OP or instruction machine code).
 
-| Mnemonic | Binary | OP  | Number of bytes |
-| -------- | ------ | --- | --------------- |
-| NOP      | 0000   | #0  |                 |
+| Mnemonic | Binary | OP  | Number of bytes | Description                             |
+| -------- | ------ | --- | --------------- | --------------------------------------- |
+| NOP      | 0000   | #0  | 1               | No operation (Do nothing)               |
 | LDX      | 0001   | #1  |                 |
 | LDY      | 0010   | #2  |                 |
 | ADX      | 0011   | #3  |                 |
@@ -60,35 +60,32 @@ Tiny4CPU has `16 opcodes` (operation code, OP or instruction machine code).
 | SUX      | 0101   | #5  |                 |
 | SUY      | 0110   | #6  |                 |
 | NOX      | 0111   | #7  |                 |
-| NOY      | 1000   | #8  |                 |
+| OUT      | 1000   | #8  |                 |
 | STX      | 1001   | #9  |                 |
 | STY      | 1010   | #A  |                 |
 | JXZ      | 1011   | #B  |                 |
 | JYZ      | 1100   | #C  |                 |
 | JCA      | 1101   | #D  |                 |
-| JMP      | 1110   | #E  | 3               |
+| JMP      | 1110   | #E  | 3               | Unconditional jump to memory address kk |
 | HLT      | 1111   | #F  |                 |
 
 #### Hex and Timing
 
-| Description                                       |
-| ------------------------------------------------- |
-| No operation (Do nothing)                         |
-| Load Register X with immediate nibble value k     |
-| Load Register Y with immediate nibble value k     |
-| Add immediate nibble value k to Register X        |
-| Add immediate nibble value k to Register Y        |
+| Load Register X with immediate nibble value k |
+| Load Register Y with immediate nibble value k |
+| Add immediate nibble value k to Register X |
+| Add immediate nibble value k to Register Y |
 | Subtract immediate nibble value k from Register X |
 | Subtract immediate nibble value k from Register Y |
-| Perform bitwise NOT operation on Register X       |
-| Perform bitwise NOT operation on Register Y       |
-| Store Register X value to memory address k        |
-| Store Register Y value to memory address k        |
-| Jump to memory address k if Register X is zero    |
-| Jump to memory address k if Register Y is zero    |
-| Jump to memory address if carry flag is set       |
-| **Unconditional jump to memory address kk**       |
-| Halt execution                                    |
+| Perform bitwise NOT operation on Register X |
+| Perform bitwise NOT operation on Register Y |
+| Store Register X value to memory address k |
+| Store Register Y value to memory address k |
+| Jump to memory address k if Register X is zero |
+| Jump to memory address k if Register Y is zero |
+| Jump to memory address if carry flag is set |
+
+| Halt execution |
 
 #### Details
 
@@ -98,8 +95,8 @@ Unconditional jump to (memory) address.
 
 ###### Format
 
-| 1110 | ADDRESS BYTE 1 | ADDRESS BYTE 2 |
-| ---- | -------------- | -------------- |
+| 1110 | ADDRESS NIBBLE |
+| ---- | -------------- |
 
 ###### Function
 

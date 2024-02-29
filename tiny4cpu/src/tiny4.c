@@ -4,18 +4,16 @@
 #include <stdlib.h>
 
 bool initialize(Tiny4 *tiny4, unsigned int clock_in_msec) {
-  tiny4->is_running = true;
+  /* Set variables */
   tiny4->current_opcode = 0x0u;
-  set_u4_value(&tiny4->program_counter, 0);
-  set_u4_value(&tiny4->input, 0x0u);
+  set_u4_value(&tiny4->program_counter, 0x0u);
   set_u4_value(&tiny4->output, 0x0u);
-  set_u4_value(&tiny4->program_length, 0);
+  set_u4_value(&tiny4->program_length, 0x0u);
   tiny4->clock_hertz = 1000 / clock_in_msec;
 
   /* Clear General Purpose Registers */
-  for (int i = 0; i < REGISTER_COUNT; ++i) {
-    set_u4_value(&tiny4->R[i], 0x0u);
-  }
+  set_u4_value(&tiny4->register_x, 0x0u);
+  set_u4_value(&tiny4->register_y, 0x0u);
 
   /* Clear Memory */
   for (int i = 0; i < MEMORY_SIZE; ++i) {
@@ -79,54 +77,65 @@ void emulate_cycle(Tiny4 *tiny4) {
   switch (tiny4->current_opcode & 0xF0u) {
     case 0x10u:
       /* LDX */
-      set_u4_value(&tiny4->R[0], tiny4->current_opcode & 0x0Fu);
+      set_u4_value(&tiny4->register_x, tiny4->current_opcode & 0x0Fu);
       break;
 
     case 0x20u:
       /* LDY */
-      set_u4_value(&tiny4->R[1], tiny4->current_opcode & 0x0Fu);
+      set_u4_value(&tiny4->register_y, tiny4->current_opcode & 0x0Fu);
       break;
 
     case 0x30u:
       /* ADX */
-      add_u4_value(&tiny4->R[0], tiny4->current_opcode & 0x0Fu);
+      add_u4_value(&tiny4->register_x, tiny4->current_opcode & 0x0Fu);
       break;
 
     case 0x40u:
       /* ADY */
-      add_u4_value(&tiny4->R[1], tiny4->current_opcode & 0x0Fu);
+      add_u4_value(&tiny4->register_y, tiny4->current_opcode & 0x0Fu);
       break;
 
     case 0x50u:
       /* SUX */
-      subtract_u4_value(&tiny4->R[0], tiny4->current_opcode & 0x0Fu);
+      subtract_u4_value(&tiny4->register_x, tiny4->current_opcode & 0x0Fu);
       break;
 
     case 0x60u:
       /* SUY */
-      subtract_u4_value(&tiny4->R[1], tiny4->current_opcode & 0x0Fu);
+      subtract_u4_value(&tiny4->register_y, tiny4->current_opcode & 0x0Fu);
       break;
 
     case 0x70u:
       /* NOX */
-      bitwise_not_u4_value(&tiny4->R[0]);
+      bitwise_not_u4_value(&tiny4->register_x);
       break;
 
     case 0x80u:
-      /* NOY */
-      bitwise_not_u4_value(&tiny4->R[1]);
+      /* OUT */
+      if ((tiny4->current_opcode & 0x0Fu) == 0) {
+        set_u4_value(&tiny4->output, tiny4->register_x.value);
+      } else if ((tiny4->current_opcode & 0x0Fu) == 1) {
+        set_u4_value(&tiny4->output, tiny4->register_y.value);
+      }
       break;
 
     case 0x90u:
       /* STX */
       set_u4_value(&tiny4->memory[tiny4->current_opcode & 0x0Fu],
-                   tiny4->R[0].value);
+                   tiny4->register_x.value);
       break;
 
     case 0xA0u:
       /* STY */
       set_u4_value(&tiny4->memory[tiny4->current_opcode & 0x0Fu],
-                   tiny4->R[1].value);
+                   tiny4->register_y.value);
+      break;
+
+    case 0xB0u:
+      /* JXZ */
+      if (get_u4_value(&tiny4->register_x) == 0) {
+        set_u4_value(&tiny4->program_counter, tiny4->current_opcode & 0x0Fu);
+      }
       break;
 
     case 0xE0u:

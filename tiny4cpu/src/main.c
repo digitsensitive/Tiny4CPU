@@ -6,14 +6,13 @@
 Tiny4 tiny4;
 
 #ifdef _WIN32
-UINT originalCodePage;
+UINT original_code_page;
 #endif
 
 void load_terminal_settings() {
 #ifdef _WIN32
-  // Only perform this on Windows
   // Get the current console output code page
-  originalCodePage = GetConsoleOutputCP();
+  original_code_page = GetConsoleOutputCP();
 
   // Set the console output code page to UTF-8
   SetConsoleOutputCP(CP_UTF8);
@@ -22,17 +21,24 @@ void load_terminal_settings() {
 
 void restore_terminal_settings() {
 #ifdef _WIN32
-  // Only restore the original console output code page on Windows
   // Restore the original console output code page
-  SetConsoleOutputCP(originalCodePage);
+  SetConsoleOutputCP(original_code_page);
 #endif
 }
 
+/**
+ * @brief Tiny4CPU
+ *
+ * @param argc
+ * @param argv
+ * @return int
+ */
 int main(int argc, char *argv[]) {
   load_terminal_settings();
 
   if (argc != 3) {
-    printf("usage: tiny4cpu [file_path_to_bin_file] [clock_time_in_msec]\n");
+    fputs("usage: tiny4cpu [file_path_to_bin_file] [clock_time_in_msec]\n",
+          stderr);
     return -1;
   }
 
@@ -40,6 +46,7 @@ int main(int argc, char *argv[]) {
   bool init_succeeded = initialize(&tiny4, (unsigned int)atoi(argv[2]));
 
   if (init_succeeded) {
+    tiny4.is_running = true;
     load_application(&tiny4, argv[1]);
   }
 

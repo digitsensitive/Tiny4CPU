@@ -1,0 +1,12 @@
+; Set Output stepwise
+
+; Init registers to zero
+Init:
+LDX #0
+LDY #0
+
+; Main Loop
+Loop:
+ADX #1
+OUT #0
+JMP Loop
