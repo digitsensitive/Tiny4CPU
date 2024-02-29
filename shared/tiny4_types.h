@@ -7,7 +7,7 @@ typedef uint8_t u8;
 
 // 4 bits  -> [0-15] or [0x0-0xF]
 typedef struct {
-  u8 value : 4; /* Using a bit-field to represent 4 bits*/
+  u8 value : 4; /* Using a bit-field to represent 4 bits */
 } u4;
 
 static inline u8 get_u4_value(u4 *u) { return u->value; }
