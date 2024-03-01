@@ -1,7 +1,6 @@
 # Tiny4CPU
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/digitsensitive/Tiny4CPU)
-![GitHub Release](https://img.shields.io/github/v/release/digitsensitive/Tiny4CPU)
 
 Tiny4CPU is a lightweight and educational 4-bit CPU emulator designed for
 simplicity. This project provides a hands-on exploration into the fundamentals
