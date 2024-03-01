@@ -1,10 +1,8 @@
 #include "assembler.h"
 
 Instruction instructions[NUM_INSTRUCTIONS] = {
-    {"NOP", 0x0u}, {"LDX", 0x1u}, {"LDY", 0x2u}, {"ADX", 0x3u},
-    {"ADY", 0x4u}, {"SUX", 0x5u}, {"SUY", 0x6u}, {"NOX", 0x7u},
-    {"OUT", 0x8u}, {"STX", 0x9u}, {"STY", 0xAu}, {"JXZ", 0xBu},
-    {"JYZ", 0xCu}, {"JCA", 0xDu}, {"JMP", 0xEu}, {"HLT", 0xFu}};
+    {"LDX", 0x0u}, {"LDY", 0x1u}, {"ADX", 0x2u}, {"ADY", 0x3u}, {"SUX", 0x4u},
+    {"SUY", 0x5u}, {"OUT", 0x6u}, {"JXZ", 0x7u}, {"JYZ", 0x8u}, {"JMP", 0x9u}};
 
 Label labels[MAX_LABELS];
 unsigned int label_count = 0;
@@ -82,7 +80,7 @@ bool parse_labels(const char* file_path) {
   unsigned int current_line = 0;
   while (fgets(line, MAX_LINE_LENGTH, assembly_input_file) != NULL) {
     /* Continue if comment or empty line */
-    if (line[0] == ';' || line[0] == '\n') {
+    if (line[0] == ';' || line[0] == '\n' || line[0] == '\r') {
       current_line++;
       continue;
     }
@@ -97,11 +95,7 @@ bool parse_labels(const char* file_path) {
       /* Increment address depending on the instruction on the line */
       char mnemonic[4];
       if (sscanf(line, "%3s", mnemonic) == 1) {
-        for (int i = 0; i < NUM_INSTRUCTIONS; ++i) {
-          if (strcmp(mnemonic, instructions[i].mnemonic) == 0) {
-            address += 2;
-          }
-        }
+        address += 2;
       } else {
         fprintf(stderr,
                 "Parse labels: Missing or incorrect Mnemonic at line %d.\n",
@@ -148,7 +142,7 @@ bool assemble(const char* file_path) {
   unsigned int current_line = 0;
   while (fgets(line, MAX_LINE_LENGTH, assembly_input_file) != NULL) {
     /* Continue if comment or empty line */
-    if (line[0] == ';' || line[0] == '\n') {
+    if (line[0] == ';' || line[0] == '\n' || line[0] == '\r') {
       current_line++;
       continue;
     }
@@ -180,7 +174,7 @@ bool assemble(const char* file_path) {
     unsigned int temp_value;
     if (sscanf(line, "%*3s %c", &sign) == 1) {
       switch (sign) {
-        case '#':
+        case '#': {
           char prefix;
           if (sscanf(line, "%*3s %*c%c", &prefix) == 1) {
             if (prefix == '$') {
@@ -196,7 +190,8 @@ bool assemble(const char* file_path) {
             }
           }
           break;
-        case '%':
+        }
+        case '%': {
           char temp_binary_number[5];
           /* Binary immediate addressing mode */
           if (sscanf(line, "%*3s %*c%4s", temp_binary_number) == 1) {
@@ -204,8 +199,9 @@ bool assemble(const char* file_path) {
             set_u4_value(&operand, temp_value);
           }
           break;
+        }
 
-        default:
+        default: {
           /* Default case means label */
           char current_label[MAX_LABEL_LENGTH];
           if (sscanf(line, "%*3s %s", current_label) == 1) {
@@ -216,6 +212,7 @@ bool assemble(const char* file_path) {
               }
             }
           }
+        }
       }
     }
 

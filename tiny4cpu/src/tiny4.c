@@ -75,42 +75,37 @@ void emulate_cycle(Tiny4 *tiny4) {
   add_u4_value(&tiny4->program_counter, 2);
 
   switch (tiny4->current_opcode & 0xF0u) {
-    case 0x10u:
+    case 0x00u:
       /* LDX */
       set_u4_value(&tiny4->register_x, tiny4->current_opcode & 0x0Fu);
       break;
 
-    case 0x20u:
+    case 0x10u:
       /* LDY */
       set_u4_value(&tiny4->register_y, tiny4->current_opcode & 0x0Fu);
       break;
 
-    case 0x30u:
+    case 0x20u:
       /* ADX */
       add_u4_value(&tiny4->register_x, tiny4->current_opcode & 0x0Fu);
       break;
 
-    case 0x40u:
+    case 0x30u:
       /* ADY */
       add_u4_value(&tiny4->register_y, tiny4->current_opcode & 0x0Fu);
       break;
 
-    case 0x50u:
+    case 0x40u:
       /* SUX */
       subtract_u4_value(&tiny4->register_x, tiny4->current_opcode & 0x0Fu);
       break;
 
-    case 0x60u:
+    case 0x50u:
       /* SUY */
       subtract_u4_value(&tiny4->register_y, tiny4->current_opcode & 0x0Fu);
       break;
 
-    case 0x70u:
-      /* NOX */
-      bitwise_not_u4_value(&tiny4->register_x);
-      break;
-
-    case 0x80u:
+    case 0x60u:
       /* OUT */
       if ((tiny4->current_opcode & 0x0Fu) == 0) {
         set_u4_value(&tiny4->output, tiny4->register_x.value);
@@ -119,29 +114,25 @@ void emulate_cycle(Tiny4 *tiny4) {
       }
       break;
 
-    case 0x90u:
-      /* STX */
-      set_u4_value(&tiny4->memory[tiny4->current_opcode & 0x0Fu],
-                   tiny4->register_x.value);
-      break;
-
-    case 0xA0u:
-      /* STY */
-      set_u4_value(&tiny4->memory[tiny4->current_opcode & 0x0Fu],
-                   tiny4->register_y.value);
-      break;
-
-    case 0xB0u:
+    case 0x70u:
       /* JXZ */
       if (get_u4_value(&tiny4->register_x) == 0) {
         set_u4_value(&tiny4->program_counter, tiny4->current_opcode & 0x0Fu);
       }
       break;
 
-    case 0xE0u:
+    case 0x80u:
+      /* JYZ */
+      if (get_u4_value(&tiny4->register_y) == 0) {
+        set_u4_value(&tiny4->program_counter, tiny4->current_opcode & 0x0Fu);
+      }
+      break;
+
+    case 0x90u:
       /* JMP */
       set_u4_value(&tiny4->program_counter, tiny4->current_opcode & 0x0Fu);
       break;
+
     default:
       printf("Wrong opcode.\n");
       break;
