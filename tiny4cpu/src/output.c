@@ -39,13 +39,13 @@ void draw_terminal_output(Tiny4* tiny4) {
   printf("\n\n");
 
   printf("Instruction Memory:\n");
-  printf("[OP] Binary    [Hex,   Dec]\n");
-  printf("---------------------------\n");
+  printf("[OP] Binary    [Hex,    Dec]\n");
+  printf("----------------------------\n");
   for (int i = 0; i < get_u4_value(&tiny4->program_length); i = i + 2) {
     if ((get_u4_value(&tiny4->program_counter) - 2) / 2 == i / 2) {
       printf("\x1B[33;1m");
     }
-    printf("[%2d] %c%c%c%c %c%c%c%c [0x%X%X, %2d%2d]\n", i / 2,
+    printf("[%2d] %c%c%c%c %c%c%c%c [0x%X%X, %2d %2d]\n", i / 2,
            NIBBLE_TO_BINARY(get_u4_value(&tiny4->memory[i])),
            NIBBLE_TO_BINARY(get_u4_value(&tiny4->memory[i + 1])),
            get_u4_value(&tiny4->memory[i]), get_u4_value(&tiny4->memory[i + 1]),
