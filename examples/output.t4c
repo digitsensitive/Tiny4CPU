@@ -1,9 +1,8 @@
 ; Usage of instruction OUT
 
-; Init registers to zero
+; Init Register X to 0
 Init:
 LDX #0
-LDY #0
 
 ; Main Loop
 Loop:
