@@ -13,6 +13,22 @@ Dive into the world of microprocessors with Tiny4CPU and witness the power of
 
 <img src="./tiny4cpu.gif" alt="Tiny4CPU" style="width: 100%;"/>
 
+Code for the upper example:
+
+```asm
+; Usage of instruction OUT
+
+; Init Register X to 0
+Init:
+LDX #0
+
+; Main Loop
+Loop:
+ADX #1
+OUT #0
+JMP Loop
+```
+
 ## Features
 
 - 4-bit architecture with its own assembler
