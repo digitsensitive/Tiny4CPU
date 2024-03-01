@@ -5,7 +5,6 @@
 typedef enum { false = 0, true = 1 } bool;
 typedef uint8_t u8;
 
-// 4 bits  -> [0-15] or [0x0-0xF]
 typedef struct {
   u8 value : 4; /* Using a bit-field to represent 4 bits */
 } u4;
