@@ -1,7 +1,5 @@
 # Tiny4CPU
 
-WORK IN PROGRESS!
-
 ![GitHub repo size](https://img.shields.io/github/repo-size/digitsensitive/Tiny4CPU)
 ![GitHub Release](https://img.shields.io/github/v/release/digitsensitive/Tiny4CPU)
 
@@ -12,9 +10,6 @@ language programming in a compact environment.
 
 Dive into the world of microprocessors with Tiny4CPU and witness the power of
 4 bits in action.
-
-This project was inspired by [yashikota/td4-py](https://github.com/yashikota/td4-py),
-which was inspired by [How to Build a CPU by Iku Watanabe](https://www.amazon.co.jp/CPU%E3%81%AE%E5%89%B5%E3%82%8A%E3%81%8B%E3%81%9F-%E6%B8%A1%E6%B3%A2-%E9%83%81/dp/4839909865/ref=asap_bc?ie=UTF8).
 
 <img src="./tiny4cpu.gif" alt="Tiny4CPU" style="width: 100%;"/>
 
@@ -48,65 +43,31 @@ Find some examples in the root examples folder.
 
 ### Instruction Set
 
-Tiny4CPU has `16 opcodes` (operation code, OP or instruction machine code).
+Tiny4CPU has `16 opcodes` (operation code, OP or instruction machine code),
+which are all `one byte long` and stored `big-endian`. Big-endian means that
+the most-significant-byte is saved in memory first (i.e. the lower memory address).
+Currently only 10 of potentially 16 opcodes are defined.
 
-| Mnemonic | Binary | OP  | Number of bytes | Description                             |
-| -------- | ------ | --- | --------------- | --------------------------------------- |
-| NOP      | 0000   | #0  | 1               | No operation (Do nothing)               |
-| LDX      | 0001   | #1  |                 |
-| LDY      | 0010   | #2  |                 |
-| ADX      | 0011   | #3  |                 |
-| ADY      | 0100   | #4  |                 |
-| SUX      | 0101   | #5  |                 |
-| SUY      | 0110   | #6  |                 |
-| NOX      | 0111   | #7  |                 |
-| OUT      | 1000   | #8  |                 |
-| STX      | 1001   | #9  |                 |
-| STY      | 1010   | #A  |                 |
-| JXZ      | 1011   | #B  |                 |
-| JYZ      | 1100   | #C  |                 |
-| JCA      | 1101   | #D  |                 |
-| JMP      | 1110   | #E  | 3               | Unconditional jump to memory address kk |
-| HLT      | 1111   | #F  |                 |
+| Mnemonic | Instruction | Description                                       |
+| -------- | ----------- | ------------------------------------------------- |
+| LDX      | 0000 kkkk   | Load Register X with immediate nibble value k     |
+| LDY      | 0001 kkkk   | Load Register Y with immediate nibble value k     |
+| ADX      | 0010 kkkk   | Add immediate nibble value k to Register X        |
+| ADY      | 0011 kkkk   | Add immediate nibble value k to Register Y        |
+| SUX      | 0100 kkkk   | Subtract immediate nibble value k from Register X |
+| SUY      | 0101 kkkk   | Subtract immediate nibble value k from Register Y |
+| OUT      | 0110 kkkk   | Set output to nibble value from register (1)      |
+| JXZ      | 0111 kkkk   | Jump to memory address k if Register X is zero    |
+| JYZ      | 1000 kkkk   | Jump to memory address k if Register Y is zero    |
+| JMP      | 1001 kkkk   | Unconditional jump to memory address k            |
+| ---      | 1010        | Unused                                            |
+| ---      | 1011        | Unused                                            |
+| ---      | 1100        | Unused                                            |
+| ---      | 1101        | Unused                                            |
+| ---      | 1110        | Unused                                            |
+| ---      | 1111        | Unused                                            |
 
-#### Hex and Timing
-
-| Load Register X with immediate nibble value k |
-| Load Register Y with immediate nibble value k |
-| Add immediate nibble value k to Register X |
-| Add immediate nibble value k to Register Y |
-| Subtract immediate nibble value k from Register X |
-| Subtract immediate nibble value k from Register Y |
-| Perform bitwise NOT operation on Register X |
-| Perform bitwise NOT operation on Register Y |
-| Store Register X value to memory address k |
-| Store Register Y value to memory address k |
-| Jump to memory address k if Register X is zero |
-| Jump to memory address k if Register Y is zero |
-| Jump to memory address if carry flag is set |
-
-| Halt execution |
-
-#### Details
-
-##### JMP
-
-Unconditional jump to (memory) address.
-
-###### Format
-
-| 1110 | ADDRESS NIBBLE |
-| ---- | -------------- |
-
-###### Function
-
-| PC &#11013; ADDRESS |
-| ------------------- |
-
-###### Description
-
-A new address is loaded in the program counter and a jump in the program
-sequence occurs. The address specification can only be absolute.
+(1) Use value #0 for Register X or value #1 for Register Y
 
 ### Registers
 
@@ -117,38 +78,17 @@ sequence occurs. The address specification can only be absolute.
 | IAR      | 8           | Instruction Address Register |
 | ACC      | 4           | Accumulator                  |
 | MAR      | 4           | Memory Address Register      |
-| R0       | 4           | General purpose register     |
-| R1       | 4           | General purpose register     |
+| RX       | 4           | General-purpose register X   |
+| RY       | 4           | General-purpose register Y   |
 
 ### Memory
 
-- Mono-directional 8-bit address-bus from the microprocessor unit (MPU) to memory
+- Mono-directional 4-bit address-bus from the microprocessor unit (MPU) to memory
 - The memory layout consists of one Memory Address Register (MAR).
   The MAR is connected to two 2x4 decoder, enabling addressing of up
   to 16 memory locations
 - Each memory location holds 4 bits of data, resulting in a total memory size
   of 8 bytes
-
-### Addressing Modes
-
-Addressing refers to the specification of the location of the operand.
-
-#### Absolute (Extended)
-
-| OPCODE | FULL 16-BIT |
-| ------ | ----------- |
-
-| OPCODE | ADDRESS |
-| ------ | ------- |
-
-### Endianness
-
-- Big-endian: Most-significant-byte is saved in memory first
-  (i.e. the lower memory address)
-
-### Clock Frequency
-
-TO BE COMPLETED
 
 ## References
 
@@ -157,4 +97,6 @@ TO BE COMPLETED
 - [ASCII Chart](https://en.cppreference.com/w/cpp/language/ascii)
 - [DDL4-CPU, A Modular 4-Bit CPU Design by Dave](https://hackaday.io/project/158510/logs)
 - [Github project td4-py by yashikota](https://github.com/yashikota/td4-py)
+- [How to Build a CPU by Iku Watanabe](https://www.amazon.co.jp/CPU%E3%81%AE%E5%89%B5%E3%82%8A%E3%81%8B%E3%81%9F-%E6%B8%A1%E6%B3%A2-%E9%83%81/dp/4839909865/ref=asap_bc?ie=UTF8)
 - [Symbl](https://symbl.cc/en)
+- [yashikota/td4-py](https://github.com/yashikota/td4-py)
