@@ -1,4 +1,5 @@
 ; Usage of instruction LDX/LDY
+
 InitX:
 LDX #0 ; Load decimal value 0
 LDX #$A ; Load hexadecimal value A
