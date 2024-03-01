@@ -1,0 +1,10 @@
+; Usage of instruction ADX/ADY
+
+Init:
+LDX #0
+LDY #0
+
+Loop:
+ADX #1 ; Add one to Register X
+ADY #1 ; Add one to Register Y
+JMP Loop
