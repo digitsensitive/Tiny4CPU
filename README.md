@@ -11,7 +11,7 @@ language programming in a compact environment.
 Dive into the world of microprocessors with Tiny4CPU and witness the power of
 4 bits in action.
 
-<img src="./tiny4cpu.gif" alt="Tiny4CPU" style="width: 100%;"/>
+<img src="./tiny4cpu.gif" alt="Tiny4CPU"/>
 
 Code for the upper example:
 
