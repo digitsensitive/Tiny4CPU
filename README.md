@@ -30,6 +30,8 @@ Use the Tiny4CPU Assembler to assembly your program to a `*.bin` file.
 After that, load your ROM `*.bin` file using the Tiny4CPU executable, including
 the file path and the clock time in milliseconds.
 
+The recommended clock time is 1000 milliseconds.
+
 Example:
 
 ```bash
