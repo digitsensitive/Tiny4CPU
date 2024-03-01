@@ -1,0 +1,10 @@
+; Usage of instruction LDX/LDY
+InitX:
+LDX #0 ; Load decimal value 0
+LDX #$A ; Load hexadecimal value A
+LDX %1000 ; Load binary value 8
+
+InitY:
+LDY #1 ; Load decimal value 1
+LDY #$B ; Load hexadecimal value B
+LDY %1001 ; Load binary value 9
