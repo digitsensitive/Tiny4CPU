@@ -13,8 +13,8 @@ void draw_terminal_output(Tiny4* tiny4) {
   printf("=================\n");
   reset_font_style();
   printf("Power: %s\n", tiny4->is_running ? "On" : "Off");
-  printf("Program Length: %d\n", get_u4_value(&tiny4->program_length));
-  printf("Program Size: %d bytes\n", get_u4_value(&tiny4->program_length) / 2);
+  printf("Program Length: %d\n", tiny4->program_length);
+  printf("Program Size: %d bytes\n", tiny4->program_length / 2);
   printf("PC: %d\n", get_u4_value(&tiny4->program_counter));
   printf("Clock: %d Hz\n", tiny4->clock_hertz);
   printf("Register X: " NIBBLE_TO_BINARY_PATTERN,
@@ -41,7 +41,7 @@ void draw_terminal_output(Tiny4* tiny4) {
   printf("Instruction Memory:\n");
   printf("[OP] Binary    [Hex,    Dec]\n");
   printf("----------------------------\n");
-  for (int i = 0; i < get_u4_value(&tiny4->program_length); i = i + 2) {
+  for (int i = 0; i < tiny4->program_length; i = i + 2) {
     if ((get_u4_value(&tiny4->program_counter) - 2) / 2 == i / 2) {
       printf("\x1B[33;1m");
     }

@@ -8,7 +8,7 @@ typedef struct {
   bool is_running;
   unsigned int clock_hertz;
   u4 output;
-  u4 program_length;
+  u8 program_length;
   u8 current_opcode;
   u4 program_counter;
   u4 register_x;

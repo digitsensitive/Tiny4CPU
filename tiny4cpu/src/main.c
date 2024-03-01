@@ -44,10 +44,14 @@ int main(int argc, char *argv[]) {
 
   /* Initialize Tiny4CPU instance */
   bool init_succeeded = initialize(&tiny4, (unsigned int)atoi(argv[2]));
+  bool load_succeeded = false;
 
   if (init_succeeded) {
+    load_succeeded = load_application(&tiny4, argv[1]);
+  }
+
+  if (load_succeeded) {
     tiny4.is_running = true;
-    load_application(&tiny4, argv[1]);
   }
 
   while (tiny4.is_running) {

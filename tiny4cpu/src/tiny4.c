@@ -8,7 +8,7 @@ bool initialize(Tiny4 *tiny4, unsigned int clock_in_msec) {
   tiny4->current_opcode = 0x0u;
   set_u4_value(&tiny4->program_counter, 0x0u);
   set_u4_value(&tiny4->output, 0x0u);
-  set_u4_value(&tiny4->program_length, 0x0u);
+  tiny4->program_length = 0x0u;
   tiny4->clock_hertz = 1000 / clock_in_msec;
 
   /* Clear General Purpose Registers */
@@ -52,11 +52,17 @@ bool load_application(Tiny4 *tiny4, const char *path_to_file) {
     return false;
   }
 
+  if (file_length > 8) {
+    fprintf(stderr, "The program is too big (current size: %ld bytes).\n",
+            file_length);
+    return false;
+  }
+
   // Copy buffer to Tiny4 memory
-  for (int i = 0; i < file_length; ++i) {
+  for (int i = 0; i < file_length; i++) {
     set_u4_value(&tiny4->memory[i * 2], (buffer[i] & 0xF0u) >> 4);
     set_u4_value(&tiny4->memory[i * 2 + 1], buffer[i] & 0x0Fu);
-    add_u4_value(&tiny4->program_length, 2);
+    tiny4->program_length += 2;
   }
 
   // Close file, free buffer
@@ -138,8 +144,7 @@ void emulate_cycle(Tiny4 *tiny4) {
       break;
   }
 
-  if (get_u4_value(&tiny4->program_counter) >=
-      get_u4_value(&tiny4->program_length)) {
+  if (get_u4_value(&tiny4->program_counter) >= tiny4->program_length) {
     tiny4->is_running = false;
   }
 }
