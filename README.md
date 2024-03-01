@@ -37,6 +37,7 @@ JMP Loop
 - Assembly language support
 - Modular and extensible design
 - Comprehensive documentation
+- Examples for each instruction
 
 ## How to write a program for the Tiny4CPU
 
@@ -50,11 +51,9 @@ The recommended clock time is 1000 milliseconds.
 Example:
 
 ```bash
-./assembler .../examples/counter.t4c
-./tiny4cpu .../examples/counter.bin 1000
+./assembler .../examples/output.t4c
+./tiny4cpu .../examples/output.bin 1000
 ```
-
-Find some examples in the root examples folder.
 
 ## Instruction set architecture (ISA)
 
