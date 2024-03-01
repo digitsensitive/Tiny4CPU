@@ -1,0 +1,15 @@
+; Usage of instruction JXZ/JYZ
+
+Init:
+LDX #0
+LDY #0
+
+Loop1:
+ADX #1
+JXZ Loop2
+JMP Loop1
+
+Loop2:
+ADY #1
+JYZ Init
+JMP Loop2
