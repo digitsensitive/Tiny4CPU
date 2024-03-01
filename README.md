@@ -15,7 +15,7 @@ Dive into the world of microprocessors with Tiny4CPU and witness the power of
 
 Code for the upper example:
 
-```asm
+```bash
 ; Usage of instruction OUT
 
 ; Init Register X to 0
