@@ -30,7 +30,7 @@ JMP Loop
 
 ## Features
 
-- 4-bit architecture with its own assembler
+- 4-bit architecture with its own assembler and disassembler
 - 16-instruction set for data manipulation and control flow
 - 2 general-purpose registers and memory space of 8 bytes
 - Ability to adjust CPU clock cycles for synchronization in milliseconds
