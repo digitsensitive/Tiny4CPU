@@ -1,43 +1,9 @@
 #include "assembler.h"
 
-Instruction instructions[NUM_INSTRUCTIONS] = {
-    {"LDX", 0x0u}, {"LDY", 0x1u}, {"ADX", 0x2u}, {"ADY", 0x3u}, {"SUX", 0x4u},
-    {"SUY", 0x5u}, {"OUT", 0x6u}, {"JXZ", 0x7u}, {"JYZ", 0x8u}, {"JMP", 0x9u}};
+#include "helpers.h"
 
 Label labels[MAX_LABELS];
 unsigned int label_count = 0;
-
-const char* replace_file_extension(const char* original_path,
-                                   const char* new_extension) {
-  // Find the last dot in the original path
-  const char* last_dot = strrchr(original_path, '.');
-
-  // Calculate the length of the extension
-  size_t extension_length = strlen(new_extension);
-
-  // Calculate the length of the original path without the extension
-  size_t path_length =
-      last_dot ? (size_t)(last_dot - original_path) : strlen(original_path);
-
-  // Allocate memory for the new path, new extension and null character
-  char* new_path = (char*)malloc(path_length + extension_length + 1);
-  if (new_path == NULL) {
-    fputs("Memory allocation failed.\n", stderr);
-    return NULL;
-  }
-
-  // Copy the original path up to the last dot (if it exists)
-  if (last_dot) {
-    strncpy(new_path, original_path, path_length);
-  } else {
-    strcpy(new_path, original_path);
-  }
-
-  // Append the new extension
-  strcpy(new_path + path_length, new_extension);
-
-  return new_path;
-}
 
 unsigned int binary_string_to_decimal(const char* binary_str) {
   unsigned int decimal_value = 0;

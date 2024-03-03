@@ -1,8 +1,7 @@
 #pragma once
 
+#include "defines.h"
 #include "tiny4_types.h"
-
-#define MEMORY_SIZE 16
 
 typedef struct {
   bool is_running;

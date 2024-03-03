@@ -12,6 +12,8 @@
     "windows.h": "c",
     "cstddef": "cpp",
     "assembler.h": "c",
-    "stdint.h": "c"
+    "stdint.h": "c",
+    "disassembler.h": "c",
+    "string.h": "c"
   }
 }
